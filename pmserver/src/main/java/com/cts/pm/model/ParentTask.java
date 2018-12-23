@@ -1,7 +1,7 @@
 package com.cts.pm.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +31,7 @@ public class ParentTask implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "parentTask")
 	@JsonManagedReference
-	private List<Task> tasks;
+	private Set<Task> tasks;
 	
 	public long getParentId() {
 		return parentId;
@@ -49,11 +49,11 @@ public class ParentTask implements Serializable {
 		this.parentTaskName = parentTaskName;
 	}
 
-	public List<Task> getTasks() {
+	public Set<Task> getTasks() {
 		return tasks;
 	}
 
-	public void setTasks(List<Task> tasks) {
+	public void setTasks(Set<Task> tasks) {
 		this.tasks = tasks;
 	}
 

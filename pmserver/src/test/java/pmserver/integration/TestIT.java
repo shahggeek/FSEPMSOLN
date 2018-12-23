@@ -1,4 +1,4 @@
-package pmserver;
+package pmserver.integration;
 
 import static com.jayway.restassured.RestAssured.get;
 import static org.hamcrest.Matchers.equalTo;
