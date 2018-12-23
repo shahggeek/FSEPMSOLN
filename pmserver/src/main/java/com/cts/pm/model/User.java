@@ -35,11 +35,11 @@ public class User implements Serializable {
 	@Column(name = "employeeId", nullable = false)
 	private int employeeId;
 	
-	@OneToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "user")
 	@JsonManagedReference
 	private Set<Project> projects;
 	
-	@OneToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "user")
 	@JsonManagedReference
 	private Set<Task> tasks;
 	
