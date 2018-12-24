@@ -1,6 +1,7 @@
 package pmserver.integration;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,15 +15,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cts.pm.config.ApplicationConfig;
 import com.cts.pm.main.ProjectManagementMain;
 import com.cts.pm.model.Project;
+import com.cts.pm.model.Task;
 import com.cts.pm.model.User;
 import com.cts.pm.repository.ProjectRepositoryDao;
+import com.cts.pm.repository.TaskRepositoryDao;
 import com.cts.pm.repository.UserRepositoryDao;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { ApplicationConfig.class, ProjectManagementMain.class })
 @Transactional
-public class ProjectRepositoryIT {
+public class TaskRepositoryIT {
 
+	@Resource(name="taskRepositoryDao")
+	 private TaskRepositoryDao taskRepositoryDao;
+	
 	@Resource(name="projectRepositoryDao")
 	 private ProjectRepositoryDao projectRepositoryDao;
 	
@@ -30,35 +36,33 @@ public class ProjectRepositoryIT {
 	 private UserRepositoryDao userRepositoryDao;
 	
 	@Test
-	public void testProjectRepository() throws SQLException{
-		List<Project> allProjects = projectRepositoryDao.getAllProjects();
-		System.out.println(allProjects.size());
+	public void testTaskRepository() throws SQLException{
+		List<Task> allTasks = taskRepositoryDao.getAllTasks();
+		System.out.println(allTasks.size());
 	}
 	
 	@Test
-	public void testAddProject() throws SQLException {
+	public void testAddTask() throws SQLException {
 		Project project = new Project();
 		project.setProjectName("Test Project");
 		project.setPriority(1);
-		Long projectId = projectRepositoryDao.addNewProject(project);
-		System.out.println("Added Project "+projectId);
-		projectRepositoryDao.deleteProject(project);
-	}
-	
-	
-	@Test
-	public void testUpdateProject() throws SQLException {
-		Project project = new Project();
-		project.setProjectName("TestQA Project");
-		project.setPriority(2);
 		projectRepositoryDao.addNewProject(project);
-		project.setProjectName("Updated Project Name");
-		projectRepositoryDao.updateProject(project);
+		Task task = new Task();
+		task.setTaskName("Test Task");
+		task.setStartDate(new Date());
+		task.setEndDate(new Date());
+		task.setPriority(2);
+		task.setProject(project);
+		Long taskId = taskRepositoryDao.addNewTask(task);
+		task.setTaskName("Updated task name");
+		taskRepositoryDao.updateTask(task);
+		taskRepositoryDao.deleteTask(task);
 		projectRepositoryDao.deleteProject(project);
 	}
-	
+
 	@Test
-	public void testAddProjectWithManager() throws SQLException {
+	public void testAddTaskWithOwner() throws SQLException {
+		
 		User user = new User();
 		user.setEmployeeId(123);
 		user.setFirstName("TestUser");
@@ -69,13 +73,18 @@ public class ProjectRepositoryIT {
 		Project project = new Project();
 		project.setProjectName("Test Project");
 		project.setPriority(1);
-		Long projectId = projectRepositoryDao.addNewProject(project);
-		System.out.println("Added Project "+projectId);
-		Project newProject = projectRepositoryDao.getProject(projectId);
-		User manager = userRepositoryDao.getUser(userId);
-		manager.setProject(newProject);
-		userRepositoryDao.updateUser(manager);
-		projectRepositoryDao.deleteProject(project);
-		userRepositoryDao.deleteUser(manager);
+		projectRepositoryDao.addNewProject(project);
+		Task task = new Task();
+		task.setTaskName("Test Task");
+		task.setStartDate(new Date());
+		task.setEndDate(new Date());
+		task.setPriority(2);
+		task.setProject(project);
+		task.setUser(user);
+		user.setTask(task);
+		taskRepositoryDao.addNewTask(task);
+		userRepositoryDao.updateUser(user);
+		//taskRepositoryDao.deleteTask(task);
+		//projectRepositoryDao.deleteProject(project);
 	}
 }

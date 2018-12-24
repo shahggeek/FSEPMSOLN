@@ -11,13 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -42,13 +40,12 @@ public class Project implements Serializable {
 	@Column(name = "priority")
 	private int priority;
 
-	@OneToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "project")
+	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy = "project")
 	@JsonManagedReference
 	private Set<Task> tasks;
 	
-	@ManyToOne
-	@JoinColumn(name = "userId")
-	@JsonBackReference
+	@OneToOne(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "project")
+	@JsonManagedReference
 	private User user;
 	
 	public long getProjectId() {
@@ -106,5 +103,5 @@ public class Project implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 }

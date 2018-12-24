@@ -20,8 +20,9 @@ public class PMRepository {
 	private EntityManagerFactory entityManagerFactory;
 	
 	protected Session getSession(){
-		return entityManagerFactory.unwrap(SessionFactory.class).openSession();
+		return entityManagerFactory.unwrap(SessionFactory.class).getCurrentSession();
 	}
+	
 	
 	<T> List<T> loadAllData(Class<T> type, Session session) {
 	    CriteriaBuilder builder = session.getCriteriaBuilder();

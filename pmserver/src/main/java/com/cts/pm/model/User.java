@@ -10,10 +10,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -35,13 +39,15 @@ public class User implements Serializable {
 	@Column(name = "employeeId", nullable = false)
 	private int employeeId;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "user")
-	@JsonManagedReference
-	private Set<Project> projects;
+	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "projectId")
+	@JsonBackReference
+	private Project project;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "user")
-	@JsonManagedReference
-	private Set<Task> tasks;
+	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "taskId")
+	@JsonBackReference
+	private Task task;
 	
 	public long getUserId() {
 		return userId;
@@ -75,22 +81,21 @@ public class User implements Serializable {
 		this.employeeId = employeeId;
 	}
 
-	public Set<Project> getProjects() {
-		return projects;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setProjects(Set<Project> projects) {
-		this.projects = projects;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
-	public Set<Task> getTasks() {
-		return tasks;
+	public Task getTask() {
+		return task;
 	}
 
-	public void setTasks(Set<Task> tasks) {
-		this.tasks = tasks;
+	public void setTask(Task task) {
+		this.task = task;
 	}
-	
-	
+
 	
 }
