@@ -21,32 +21,28 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepositoryDao.getAllUsers();
 	}
 	
 	@Override
 	public User getUser(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepositoryDao.getUser(userId);
 	}
 
 	@Override
-	public Long addNewUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public Long addNewUser(User user){
+		return userRepositoryDao.addNewUser(user);
+		
 	}
 
 	@Override
-	public Long updateUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateUser(User user){
+		userRepositoryDao.updateUser(user);
 	}
 
 	@Override
-	public boolean deleteUser(User user) {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteUser(User user){
+		userRepositoryDao.deleteUser(user);
 	}
 
 }

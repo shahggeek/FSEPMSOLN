@@ -1,6 +1,5 @@
 package com.cts.pm.repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,12 +13,12 @@ import com.cts.pm.model.Task;
 @Transactional
 public class TaskRepositoryDao extends PMRepository {
 
-	public List<Task> getAllTasks() throws SQLException{
+	public List<Task> getAllTasks(){
 		List<Task> allTasks = loadAllData(Task.class, getSession());
 		return allTasks;
 	}
 	
-	public Task getTask(Long taskId) throws SQLException{
+	public Task getTask(Long taskId){
 		Session session = getSession();
 		return session.get(Task.class, taskId);
 	}

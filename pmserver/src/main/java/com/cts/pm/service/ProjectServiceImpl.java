@@ -18,32 +18,27 @@ public class ProjectServiceImpl implements ProjectService {
     
 	@Override
 	public List<Project> getAllProjects() {
-		// TODO Auto-generated method stub
-		return null;
+		return projectRepositoryDao.getAllProjects();
 	}
 
 	@Override
 	public Project getProject(Long projectId) {
-		// TODO Auto-generated method stub
-		return null;
+		return projectRepositoryDao.getProject(projectId);
 	}
 
 	@Override
 	public Long addNewProject(Project project) {
-		// TODO Auto-generated method stub
-		return null;
+		return projectRepositoryDao.addNewProject(project);
 	}
 
 	@Override
-	public Long updateProject(Project project) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateProject(Project project) {
+		projectRepositoryDao.updateProject(project);
 	}
 
 	@Override
-	public boolean deleteProject(Project project) {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteProject(Project project) {
+		projectRepositoryDao.deleteProject(project);
 	}
 
 }

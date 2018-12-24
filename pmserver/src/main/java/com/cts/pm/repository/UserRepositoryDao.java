@@ -1,6 +1,5 @@
 package com.cts.pm.repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,12 +13,12 @@ import com.cts.pm.model.User;
 @Transactional
 public class UserRepositoryDao extends PMRepository{
 
-	public List<User> getAllUsers() throws SQLException{
+	public List<User> getAllUsers(){
 		List<User> allUsers = loadAllData(User.class, getSession());
 		return allUsers;
 	}
 	
-	public User getUser(Long userId) throws SQLException{
+	public User getUser(Long userId){
 		Session session = getSession();
 		return session.get(User.class, userId);
 	}

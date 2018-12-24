@@ -19,20 +19,17 @@ public class ParentTaskServiceImpl implements ParentTaskService {
     
 	@Override
 	public List<ParentTask> getAllParentTasks() {
-		// TODO Auto-generated method stub
-		return null;
+		return parentTaskRepositoryDao.getAllParentTasks();
 	}
 
 	@Override
 	public ParentTask getParentTask(Long parentId) {
-		// TODO Auto-generated method stub
-		return null;
+		return parentTaskRepositoryDao.getParentTask(parentId);
 	}
 
 	@Override
 	public Long addNewParentTask(ParentTask parentTask) {
-		// TODO Auto-generated method stub
-		return null;
+		return parentTaskRepositoryDao.addNewParentTask(parentTask);
 	}
 
 }

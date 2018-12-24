@@ -12,8 +12,8 @@ public interface TaskService {
 	
 	Long addNewTask(Task task);
 	
-	Long updateTask(Task task);
+	void updateTask(Task task);
 	
-	boolean deleteTask(Task task);
+	void deleteTask(Task task);
 	
 }

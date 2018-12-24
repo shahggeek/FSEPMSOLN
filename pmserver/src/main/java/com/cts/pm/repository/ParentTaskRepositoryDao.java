@@ -1,6 +1,5 @@
 package com.cts.pm.repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,12 +13,12 @@ import com.cts.pm.model.ParentTask;
 @Transactional
 public class ParentTaskRepositoryDao extends PMRepository {
 
-	public List<ParentTask> getAllParentTasks() throws SQLException{
+	public List<ParentTask> getAllParentTasks(){
 		List<ParentTask> allParentTasks = loadAllData(ParentTask.class, getSession());
 		return allParentTasks;
 	}
 	
-	public ParentTask getParentTask(Long parentTaskId) throws SQLException{
+	public ParentTask getParentTask(Long parentTaskId){
 		Session session = getSession();
 		return session.get(ParentTask.class, parentTaskId);
 	}

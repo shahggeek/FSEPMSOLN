@@ -1,6 +1,5 @@
 package com.cts.pm.repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,12 +13,12 @@ import com.cts.pm.model.Project;
 @Transactional
 public class ProjectRepositoryDao extends PMRepository {
 
-	public List<Project> getAllProjects() throws SQLException{
+	public List<Project> getAllProjects(){
 		List<Project> allProjects = loadAllData(Project.class, getSession());
 		return allProjects;
 	}
 	
-	public Project getProject(Long projectId) throws SQLException{
+	public Project getProject(Long projectId){
 		Session session = getSession();
 		return session.get(Project.class, projectId);
 	}

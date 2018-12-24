@@ -19,32 +19,27 @@ public class TaskServiceImpl implements TaskService {
     
 	@Override
 	public List<Task> getAllTasks() {
-		// TODO Auto-generated method stub
-		return null;
+		return taskRepositoryDao.getAllTasks();
 	}
 
 	@Override
 	public Task getTask(Long taskId) {
-		// TODO Auto-generated method stub
-		return null;
+		return taskRepositoryDao.getTask(taskId);
 	}
 
 	@Override
 	public Long addNewTask(Task task) {
-		// TODO Auto-generated method stub
-		return null;
+		return taskRepositoryDao.addNewTask(task);
 	}
 
 	@Override
-	public Long updateTask(Task task) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateTask(Task task) {
+		taskRepositoryDao.updateTask(task);;
 	}
 
 	@Override
-	public boolean deleteTask(Task task) {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteTask(Task task) {
+		taskRepositoryDao.deleteTask(task);;
 	}
 
 }

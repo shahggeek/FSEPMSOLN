@@ -12,8 +12,8 @@ public interface ProjectService {
 	
 	Long addNewProject(Project project);
 	
-	Long updateProject(Project project);
+	void updateProject(Project project);
 	
-	boolean deleteProject(Project project);
+	void deleteProject(Project project);
 	
 }

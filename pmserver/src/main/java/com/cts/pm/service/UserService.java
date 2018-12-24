@@ -12,7 +12,7 @@ public interface UserService {
 	
 	Long addNewUser(User user);
 	
-	Long updateUser(User user);
+	void updateUser(User user);
 	
-	boolean deleteUser(User user);
+	void deleteUser(User user);
 }
