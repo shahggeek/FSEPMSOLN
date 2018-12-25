@@ -16,7 +16,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
@@ -41,11 +44,11 @@ public class Project implements Serializable {
 	private int priority;
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy = "project")
-	@JsonManagedReference
+	@JsonManagedReference(value="project-tasks")
 	private Set<Task> tasks;
 	
 	@OneToOne(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "project")
-	@JsonManagedReference
+	@JsonBackReference(value="user-project")
 	private User user;
 	
 	public long getProjectId() {

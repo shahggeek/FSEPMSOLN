@@ -46,36 +46,30 @@ public class UserControllerTest extends AbstractTest {
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(201, status);
-		String content = mvcResult.getResponse().getContentAsString();
-		assertEquals(content, "User is added successfully");
 	}
 
 	@Test
 	public void updateUser() throws Exception {
-		String uri = "/users/1";
+		String uri = "/users/26";
 		User userOne = new User();
         userOne.setEmployeeId(111);
         userOne.setFirstName("FirsTtestUser");
         userOne.setLastName("TestLast");
 		String inputJson = super.mapToJson(userOne);
 		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				MockMvcRequestBuilders.put(uri).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
 				.andReturn();
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		String content = mvcResult.getResponse().getContentAsString();
-		assertEquals(content, "User is updated successsfully");
 	}
 	
 	@Test
 	public void deleteUser() throws Exception {
-		String uri = "/users/2";
+		String uri = "/users/26";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-		String content = mvcResult.getResponse().getContentAsString();
-		assertEquals(content, "User is deleted successsfully");
+		assertEquals(204, status);
 	}
 
 }

@@ -17,7 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
@@ -46,16 +48,16 @@ public class Task implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "projectId", nullable = false)
-	@JsonBackReference
+	@JsonBackReference(value="project-tasks")
 	private Project project;
 	
 	@ManyToOne
 	@JoinColumn(name = "parentId", nullable = true)
-	@JsonBackReference
+	@JsonBackReference(value="parent-task")
 	private ParentTask parentTask;
 	
 	@OneToOne(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "task")
-	@JsonManagedReference
+	@JsonBackReference(value="user-task")
 	private User user;
 	
 	

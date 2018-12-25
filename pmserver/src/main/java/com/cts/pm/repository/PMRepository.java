@@ -2,12 +2,11 @@ package com.cts.pm.repository;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PMRepository {
 
 	@Autowired
-	private EntityManagerFactory entityManagerFactory;
+	private EntityManager entityManagerFactory;
 	
 	protected Session getSession(){
-		return entityManagerFactory.unwrap(SessionFactory.class).getCurrentSession();
+		return entityManagerFactory.unwrap( Session.class );
 	}
 	
 	

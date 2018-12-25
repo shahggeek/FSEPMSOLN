@@ -30,7 +30,7 @@ public class ParentTask implements Serializable {
 	private String parentTaskName;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "parentTask")
-	@JsonManagedReference
+	@JsonManagedReference(value="parent-task")
 	private Set<Task> tasks;
 	
 	public long getParentId() {

@@ -3,10 +3,12 @@ package com.cts.pm.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cts.pm.model.Project;
 import com.cts.pm.repository.ProjectRepositoryDao;
 
+@Service
 public class ProjectServiceImpl implements ProjectService {
 
 	private ProjectRepositoryDao projectRepositoryDao;
