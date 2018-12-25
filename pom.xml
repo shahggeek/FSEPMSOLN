@@ -4,7 +4,8 @@
 	<groupId>fsepmsoln-parent</groupId>
 	<artifactId>fsepmsoln</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
+	<packaging>pom</packaging>
+
 	 <name>PM parent</name>
     <description>PM parent project</description>
 	
