@@ -17,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.cts.pm.exceptions.DataAccessException;
 import com.cts.pm.model.Project;
-import com.cts.pm.model.Task;
 import com.cts.pm.service.ProjectService;
 
 @RestController
@@ -35,7 +34,7 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/projects/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Project> getProjectById(@PathVariable("id") long projectId) throws DataAccessException{
+	public ResponseEntity<Project> getProjectById(@PathVariable("id") long projectId){
 		Project project = projectService.getProject(projectId);
     	if (project == null){
             throw new DataAccessException("Project doesn´t exist");
@@ -44,19 +43,19 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/projects", method = RequestMethod.POST)
-   	public ResponseEntity<?> addProject(@RequestBody Project project, UriComponentsBuilder ucBuilder) throws DataAccessException{
+   	public ResponseEntity<?> addProject(@RequestBody Project project, UriComponentsBuilder ucBuilder){
 		Long createdProjectId = projectService.addNewProject(project);
-		LOGGER.info("Added Project:"+createdProjectId);
+		LOGGER.info("Added ProjectId:"+createdProjectId);
 		HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/projects/{id}").buildAndExpand(createdProjectId).toUri());
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
    	}
 	
 	@RequestMapping(value = "/projects/{id}", method = RequestMethod.PUT)
-   	public ResponseEntity<Project> updateProject(@PathVariable("id") long projectId,@RequestBody Project project) throws DataAccessException{
+   	public ResponseEntity<Project> updateProject(@PathVariable("id") long projectId,@RequestBody Project project){
 		Project currentProject = projectService.getProject(projectId);
 		 if (currentProject == null) {
-			 //return error code
+			 throw new DataAccessException("Project doesn´t exist to Update");
 	        }
 		currentProject.setStartDate(project.getStartDate());
 		currentProject.setEndDate(project.getEndDate());
@@ -67,10 +66,10 @@ public class ProjectController {
    	}
 	
 	@RequestMapping(value = "/projects/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Project> deleteProjectById(@PathVariable("id") long projectId) throws DataAccessException{
+	public ResponseEntity<Project> deleteProjectById(@PathVariable("id") long projectId){
 		Project project = projectService.getProject(projectId);
 		if (project == null){
-            throw new DataAccessException("Project doesn´t exist");
+            throw new DataAccessException("Project doesn´t exist to Delete");
     	}
 		projectService.deleteProject(project);
 		return new ResponseEntity<Project>(HttpStatus.NO_CONTENT);

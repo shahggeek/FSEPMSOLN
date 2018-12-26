@@ -36,7 +36,7 @@ public class ParentTaskController {
 	}
 	
 	@RequestMapping(value = "/parenttasks/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ParentTask> getTaskById(@PathVariable("id") long parentId) throws DataAccessException{
+	public ResponseEntity<ParentTask> getTaskById(@PathVariable("id") long parentId){
 		ParentTask parentTask = parentTaskService.getParentTask(parentId);
     	if (parentTask == null){
             throw new DataAccessException("User doesn´t exist");
@@ -45,7 +45,7 @@ public class ParentTaskController {
 	}
 	
 	@RequestMapping(value = "/parenttasks", method = RequestMethod.POST)
-   	public ResponseEntity<?> addTask(@RequestBody ParentTask parentTask, UriComponentsBuilder ucBuilder) throws DataAccessException{
+   	public ResponseEntity<?> addTask(@RequestBody ParentTask parentTask, UriComponentsBuilder ucBuilder){
 		Long createdParentTaskId = parentTaskService.addNewParentTask(parentTask);
 		LOGGER.info("Added Parent Task:"+createdParentTaskId);
 		HttpHeaders headers = new HttpHeaders();

@@ -1,6 +1,7 @@
 package com.cts.pm.exceptions;
 
-public class DataAccessException extends Exception {
+@SuppressWarnings("serial")
+public class DataAccessException extends RuntimeException {
 
 	public DataAccessException(Throwable e) {
 	}

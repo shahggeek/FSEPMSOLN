@@ -84,7 +84,7 @@ public class TaskRepositoryIT {
 		user.setTask(task);
 		taskRepositoryDao.addNewTask(task);
 		userRepositoryDao.updateUser(user);
-		//taskRepositoryDao.deleteTask(task);
-		//projectRepositoryDao.deleteProject(project);
+		taskRepositoryDao.deleteTask(task);
+		projectRepositoryDao.deleteProject(project);
 	}
 }

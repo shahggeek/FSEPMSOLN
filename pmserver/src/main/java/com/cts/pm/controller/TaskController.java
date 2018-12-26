@@ -34,42 +34,43 @@ public class TaskController {
 	}
 	
 	@RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Task> getTaskById(@PathVariable("id") long taskId) throws DataAccessException{
+	public ResponseEntity<Task> getTaskById(@PathVariable("id") long taskId){
 		Task task = taskService.getTask(taskId);
     	if (task == null){
-            throw new DataAccessException("User doesn´t exist");
+            throw new DataAccessException("Task doesn´t exist");
     	}
 		return new ResponseEntity<Task>(task, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/tasks", method = RequestMethod.POST)
-   	public ResponseEntity<?> addTask(@RequestBody Task task, UriComponentsBuilder ucBuilder) throws DataAccessException{
+   	public ResponseEntity<?> addTask(@RequestBody Task task, UriComponentsBuilder ucBuilder){
 		Long createdTaskId = taskService.addNewTask(task);
-		LOGGER.info("Added Task:"+createdTaskId);
+		LOGGER.info("Added TaskId:"+createdTaskId);
 		HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/tasks/{id}").buildAndExpand(createdTaskId).toUri());
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
    	}
 	
 	@RequestMapping(value = "/tasks/{id}", method = RequestMethod.PUT)
-   	public ResponseEntity<Task> updateTask(@PathVariable("id") long taskId,@RequestBody Task task) throws DataAccessException{
+   	public ResponseEntity<Task> updateTask(@PathVariable("id") long taskId,@RequestBody Task task){
 		Task currentTask = taskService.getTask(taskId);
 		 if (currentTask == null) {
-			 //return error code
-	        }
+			 throw new DataAccessException("Task doesn´t exist to Update");
+	     }
 		currentTask.setTaskName(task.getTaskName());
 		currentTask.setStartDate(task.getStartDate());
 		currentTask.setEndDate(task.getEndDate());
 		currentTask.setPriority(task.getPriority());
+		currentTask.setStatus(task.getStatus());
 		taskService.updateTask(currentTask);
 		return new ResponseEntity<Task>(HttpStatus.OK);
    	}
 	
 	@RequestMapping(value = "/tasks/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Task> deleteTaskById(@PathVariable("id") long taskId) throws DataAccessException{
+	public ResponseEntity<Task> deleteTaskById(@PathVariable("id") long taskId){
 		Task task = taskService.getTask(taskId);
 		if (task == null){
-            throw new DataAccessException("Task doesn´t exist");
+            throw new DataAccessException("Task doesn´t exist to Delete");
     	}
 		taskService.deleteTask(task);;
 		return new ResponseEntity<Task>(HttpStatus.NO_CONTENT);

@@ -34,29 +34,29 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public ResponseEntity<User> getUserById(@PathVariable("id") long userId) throws DataAccessException{
+	public ResponseEntity<User> getUserById(@PathVariable("id") long userId){
     	User user = userService.getUser(userId);
     	if (user == null){
-            throw new DataAccessException("User doesn´t exist");
+            throw new DataAccessException("User doesn´t exist with Id "+userId);
     	}
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
-   	public ResponseEntity<?> addUser(@RequestBody User user, UriComponentsBuilder ucBuilder) throws DataAccessException{
+   	public ResponseEntity<?> addUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
 		Long createdUserId = userService.addNewUser(user);
-		LOGGER.info("Added user:"+createdUserId);
+		LOGGER.info("Added userId:"+createdUserId);
 		HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/users/{id}").buildAndExpand(createdUserId).toUri());
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
    	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-   	public ResponseEntity<User> updateUser(@PathVariable("id") long userId,@RequestBody User user) throws DataAccessException{
+   	public ResponseEntity<User> updateUser(@PathVariable("id") long userId,@RequestBody User user){
 		User currentUser = userService.getUser(userId);
 		 if (currentUser == null) {
-			 //return error code
-	        }
+			 throw new DataAccessException("User doesn´t exist to Update "+userId);
+	     }
 		currentUser.setFirstName(user.getFirstName());
 		currentUser.setLastName(user.getLastName());
 		currentUser.setEmployeeId(user.getEmployeeId());
@@ -65,10 +65,10 @@ public class UserController {
    	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<User> deleteUserById(@PathVariable("id") long userId) throws DataAccessException{
+	public ResponseEntity<User> deleteUserById(@PathVariable("id") long userId){
 		User user = userService.getUser(userId);
 		if (user == null){
-            throw new DataAccessException("User doesn´t exist");
+            throw new DataAccessException("User doesn´t exist to Delete");
     	}
 		userService.deleteUser(user);
 		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
