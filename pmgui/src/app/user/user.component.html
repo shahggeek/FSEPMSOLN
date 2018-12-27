@@ -26,9 +26,15 @@
         <hr>
         <h4>All Users</h4>
         <hr>
-        <ul class="list-group" *ngFor="let user of users">
-                <li class="list-group-item">(EmplId : {{user.employeeId}} )</li>
-        </ul>
-
+        <ng-container #outputAllUsers >
+        </ng-container>
+        <ng-template #allUsers>
+            <ul class="list-group" *ngFor="let user of users">
+                    <li class="list-group-item">(EmplId : {{user.employeeId}} )</li>
+                    <button class="btn btn-warning" (click)="editUser(user)" type="edit">Edit</button>
+                    <button class="btn btn-danger"  (click)="deleteUser(user.userId)" type="delete">Delete</button>
+            </ul>
+        </ng-template>
+ 
     </div>
 </div>

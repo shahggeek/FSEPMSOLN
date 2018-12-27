@@ -14,12 +14,15 @@
               </div>
               <div class="form-group form-inline">
                   <label for="priority">Priority : </label>
-                  <input type="range" id="priority" name="priority" min="1" max="30" value="5" step="1" oninput="priorityValue.value = priority.value" ngModel>
-                  <output name="priorityValue" id="priorityValue">24</output>
+                  <input type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value" ngModel>
+                  <output name="priorityValue" id="priorityValue">0</output>
               </div>
               <div class="form-group form-inline">
                   <label for="userId">Manager : </label>
                   <input type="text" id="userId" class="form-control" name="userId" ngModel>
+                  <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span> Search
+                  </button>
               </div>
           </div>
           <button class="btn btn-primary" type="submit">Add</button>
@@ -32,9 +35,14 @@
         <hr>
         <h4>All Projects</h4>
         <hr>
-        <ul class="list-group" *ngFor="let project of projects">
-                <li class="list-group-item">(Project : {{project.projectName}} )</li>
-        </ul>
-
+        <ng-container #outputAllProjects >
+        </ng-container>
+        <ng-template #allProjects>
+                <ul class="list-group" *ngFor="let project of projects">
+                        <li class="list-group-item">(Project : {{project.projectName}} )</li>
+                        <button class="btn btn-warning" (click)="editProject(project)" type="edit">Edit</button>
+                        <button class="btn btn-danger"  (click)="deleteProject(project.projectId)" type="delete">Delete</button>
+                </ul>
+        </ng-template>
     </div>
 </div>

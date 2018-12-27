@@ -30,6 +30,7 @@ export class UserRestService {
   }
 
   deleteUser(userId:number){
+    console.log("Delete user in rest"+userId);
     return this.httpClient.delete('http://localhost:8080/users/'+userId);
   }
 
