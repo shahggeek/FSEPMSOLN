@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.cts.pm.model.User;
 import com.cts.pm.service.UserService;
 
 @RestController
+@CrossOrigin
 public class UserController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -44,6 +46,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
    	public ResponseEntity<?> addUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
+		LOGGER.info("Adding User");
 		Long createdUserId = userService.addNewUser(user);
 		LOGGER.info("Added userId:"+createdUserId);
 		HttpHeaders headers = new HttpHeaders();
@@ -53,6 +56,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
    	public ResponseEntity<User> updateUser(@PathVariable("id") long userId,@RequestBody User user){
+		LOGGER.info("Updating User "+userId);
 		User currentUser = userService.getUser(userId);
 		 if (currentUser == null) {
 			 throw new DataAccessException("User doesn´t exist to Update "+userId);
@@ -61,16 +65,19 @@ public class UserController {
 		currentUser.setLastName(user.getLastName());
 		currentUser.setEmployeeId(user.getEmployeeId());
 		userService.updateUser(user);
+		LOGGER.info("Updated User "+userId);
 		return new ResponseEntity<User>(HttpStatus.OK);
    	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<User> deleteUserById(@PathVariable("id") long userId){
+		LOGGER.info("Deleting User "+userId);
 		User user = userService.getUser(userId);
 		if (user == null){
             throw new DataAccessException("User doesn´t exist to Delete");
     	}
 		userService.deleteUser(user);
+		LOGGER.info("Deleted User "+userId);
 		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 	}
 	
