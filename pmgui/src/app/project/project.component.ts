@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectRestService } from '../shared/project-rest.service';
 import { Project } from '../model/project.model';
+import { UserRestService } from '../shared/user-rest.service';
+import { User } from '../model/user.model';
 
 @Component({
   selector: 'app-project',
@@ -10,8 +12,9 @@ import { Project } from '../model/project.model';
 export class ProjectComponent implements OnInit {
 
   projects : Project [] = [];
-
-  constructor(private projectRestService : ProjectRestService) { }
+  users : User [] = [];
+  
+  constructor(private projectRestService : ProjectRestService, private userRestService : UserRestService) { }
 
   ngOnInit() {
     this.getAllProjects();
@@ -20,6 +23,14 @@ export class ProjectComponent implements OnInit {
   getAllProjects(){
     this.projectRestService.getAllProjects().subscribe(
       (projects : any[]) => this.projects = projects,
+      (error) => console.log(error)
+    );
+  }
+
+  
+  getAllUsers(){
+    this.userRestService.getAllUsers().subscribe(
+      (users : any[]) => this.users = users,
       (error) => console.log(error)
     );
   }

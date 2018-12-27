@@ -19,4 +19,18 @@ export class ProjectRestService {
     }
    ));
   }
+
+  
+  addProject(project :Project){
+    return this.httpClient.post('http://localhost:8080/projects',project);
+  }
+
+  
+  updateProject(project :Project){
+    return this.httpClient.put('http://localhost:8080/projects/'+project.projectId,project);
+  }
+
+  deleteProject(projectId:number){
+    return this.httpClient.delete('http://localhost:8080/projects/'+projectId);
+  }
 }

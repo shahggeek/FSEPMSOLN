@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../model/task.model';
 import { TaskRestService } from '../shared/task-rest.service';
+import { UserRestService } from '../shared/user-rest.service';
+import { ProjectRestService } from '../shared/project-rest.service';
+import { User } from '../model/user.model';
+import { ParentTaskService } from '../shared/parent-task.service';
+import { ParentTask } from '../model/parenttask.model';
 
 @Component({
   selector: 'app-task',
@@ -10,8 +15,13 @@ import { TaskRestService } from '../shared/task-rest.service';
 export class TaskComponent implements OnInit {
 
   tasks : Task [] = [];
-
-  constructor(private taskRestService : TaskRestService) { }
+  users : User [] = [];
+  parenttasks : ParentTask [] = [];
+  
+  constructor(private taskRestService : TaskRestService, 
+    private userRestService : UserRestService,
+    private projectRestService : ProjectRestService,
+    private parentTaskRestService : ParentTaskService) { }
 
   ngOnInit() {
     this.getAllTasks();
@@ -24,4 +34,17 @@ export class TaskComponent implements OnInit {
     );
   }
 
+  getAllUsers(){
+    this.userRestService.getAllUsers().subscribe(
+      (users : any[]) => this.users = users,
+      (error) => console.log(error)
+    );
+  }
+
+  getAllParentTasks(){
+    this.parentTaskRestService.getAllParentTasks().subscribe(
+      (parenttasks : any[]) => this.parenttasks = parenttasks,
+      (error) => console.log(error)
+    );
+  }
 }

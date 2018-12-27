@@ -21,4 +21,18 @@ export class TaskRestService {
    ));
   }
 
+  addTask(task :Task){
+    return this.httpClient.post('http://localhost:8080/tasks',task);
+  }
+
+  
+  updateTask(task :Task){
+    return this.httpClient.put('http://localhost:8080/tasks/'+task.taskId,task);
+  }
+
+  deleteTask(taskId:number){
+    return this.httpClient.delete('http://localhost:8080/tasks/'+taskId);
+  }
+
+
 }

@@ -19,4 +19,18 @@ export class UserRestService {
     }
    ));
   }
+
+  addUser(user :User){
+    return this.httpClient.post('http://localhost:8080/users',user);
+  }
+
+  
+  updateUser(user :User){
+    return this.httpClient.put('http://localhost:8080/users/'+user.userId,user);
+  }
+
+  deleteUser(userId:number){
+    return this.httpClient.delete('http://localhost:8080/users/'+userId);
+  }
+
 }
