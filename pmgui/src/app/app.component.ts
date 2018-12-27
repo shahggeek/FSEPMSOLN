@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'pmgui';
+
+  loadedFeature : string;
+  onNavigate(loadedFeature : string){
+    this.loadedFeature = loadedFeature;
+  }
 }

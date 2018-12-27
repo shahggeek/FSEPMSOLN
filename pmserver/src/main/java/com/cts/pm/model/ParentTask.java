@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Entity
@@ -30,7 +30,7 @@ public class ParentTask implements Serializable {
 	private String parentTaskName;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "parentTask")
-	@JsonManagedReference(value="parent-task")
+	@JsonBackReference(value="parent-task")
 	private Set<Task> tasks;
 	
 	public long getParentId() {

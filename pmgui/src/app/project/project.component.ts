@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectRestService } from '../shared/project-rest.service';
+import { Project } from '../model/project.model';
 
 @Component({
   selector: 'app-project',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor() { }
+  projects : Project [] = [];
+
+  constructor(private projectRestService : ProjectRestService) { }
 
   ngOnInit() {
+    this.getAllProjects();
+  }
+
+  getAllProjects(){
+    this.projectRestService.getAllProjects().subscribe(
+      (projects : any[]) => this.projects = projects,
+      (error) => console.log(error)
+    );
   }
 
 }

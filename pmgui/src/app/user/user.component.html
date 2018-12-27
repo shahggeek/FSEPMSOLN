@@ -1,3 +1,34 @@
-<p>
-  user works!
-</p>
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <form (ngSubmit)="onAddUser(f)" #f="ngForm">
+          <div id="user-data">
+              <div class="form-group form-inline">
+                  <label for="firstName">First Name : </label>
+                  <input type="text" id="firstName" class="form-control" name="firstName" ngModel>
+              </div>
+              <div class="form-group form-inline">
+                  <label for="lastName">Last Name : </label>
+                  <input type="text" id="lastName" class="form-control" name="lastName" ngModel>
+              </div>
+              <div class="form-group form-inline">
+                  <label for="employeeId">Employee Id : </label>
+                  <input type="text" id="employeeId" class="form-control" name="employeeId" ngModel>
+              </div>
+          </div>
+          <button class="btn btn-primary" type="submit">Add</button>
+          <button class="btn btn-primary" type="reset">Reset</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+        <hr>
+        <h4>All Users</h4>
+        <hr>
+        <ul class="list-group" *ngFor="let user of users">
+                <li class="list-group-item">(EmplId : {{user.employeeId}} )</li>
+        </ul>
+
+    </div>
+</div>
