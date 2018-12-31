@@ -24,10 +24,12 @@ export class ProjectComponent implements OnInit {
   @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
   @ViewChild('userstable', {read: TemplateRef}) userstable: TemplateRef<any>;
   
+  checkedUser : User;
   constructor(private projectRestService : ProjectRestService, private userRestService : UserRestService) { }
 
   ngOnInit() {
     this.getAllProjects();
+    this.getAllUsers();
   }
 
   private rerender() {
@@ -98,6 +100,17 @@ export class ProjectComponent implements OnInit {
 
   resetUser() {
       this.selected = null;
+  }
+
+  submitModalValue(event : any){
+    console.log(this.checkedUser.userId);
+  }
+  changeCheckbox(event : any, userId : number){
+    if( event.target.checked){
+      this.project.user.userId = userId;
+    }else{
+      this.project.user.userId = null;
+    }
   }
 
 }

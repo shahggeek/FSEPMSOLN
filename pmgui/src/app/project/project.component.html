@@ -1,6 +1,8 @@
 <div class="container">
     <div class="row">
       <div class="col-md-6">
+        <hr>
+        <h3>Add Project</h3>
         <form (ngSubmit)="onAddProject(p)" #p="ngForm">
           <div id="user-data">
               <div class="form-group form-inline">
@@ -20,7 +22,8 @@
               <div class="form-group form-inline">
                   <label for="userId">Manager : </label>
                   <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="project.user.userId">
-                  <button type="button" class="btn btn-default">
+                  
+                  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
@@ -68,5 +71,40 @@
                     <button  class="btn btn-primary" (click)="resetUser()">Cancel</button>
                 </td>
             </ng-template>
+        </div>
+        <div id="myModal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog"  role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel"   >Select Manager for Project</h4>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                            <th>Select</th>
+                                            <th>User Id</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Employee Id</th>
+                                    </thead>
+                                    <tbody>
+                                            <ng-template  let-user ngFor [ngForOf]="users">
+                                                    <tr *ngFor="let user of users">
+                                                        <td><input type="checkbox"  value="{{user.userId}}"  (change)="changeCheckbox($event, user.userId)"  [(ngModel)]="project.user.userId" class="form-control" /></td>
+                                                        <td>{{user.userId}}</td>
+                                                        <td>{{user.firstName}}</td>
+                                                        <td>{{user.lastName}}</td>
+                                                        <td>{{user.employeeId}}</td>
+                                                    </tr>
+                                            </ng-template >
+                                    </tbody>
+                                </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
         </div>
 </div>
