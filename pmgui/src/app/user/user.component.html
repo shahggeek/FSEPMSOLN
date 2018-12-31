@@ -1,6 +1,8 @@
 <div class="container">
     <div class="row">
       <div class="col-md-6">
+        <hr>
+        <h3>Add User</h3>
         <form (ngSubmit)="onAddUser(f)" #f="ngForm">
           <div id="user-data">
               <div class="form-group form-inline">
@@ -21,20 +23,41 @@
         </form>
       </div>
     </div>
-
-    <div class="row">
-        <hr>
-        <h4>All Users</h4>
-        <hr>
+    
+    <div class="table-responsive">
         <ng-container #outputAllUsers >
+            <hr>
+            <h3>All Users</h3>
+            <table class="table table-bordered table-striped" id="userstable">
+                <thead>
+
+                </thead>
+                <tbody>
+                        <tr *ngFor="let user of users; let i = index">
+                                <ng-template [ngTemplateOutlet]="getTemplate(user)" 
+                                [ngTemplateOutletContext]="{ $implicit: user, index: i }"></ng-template>
+                         </tr>
+                </tbody>
+            </table>
         </ng-container>
-        <ng-template #allUsers>
-            <ul class="list-group" *ngFor="let user of users">
-                    <li class="list-group-item">(EmplId : {{user.employeeId}} )</li>
-                    <button class="btn btn-warning" (click)="editUser(user)" type="edit">Edit</button>
-                    <button class="btn btn-danger"  (click)="deleteUser(user.userId)" type="delete">Delete</button>
-            </ul>
+        <ng-template #displayTmpl let-user>
+            <td>{{user.employeeId}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>
+                <button  class="btn btn-warning" (click)="editUser(user)">Edit</button>
+                <button  class="btn btn-danger" (click)="deleteUser(user.userId)">Delete</button>
+            </td>
         </ng-template>
- 
+        
+            <ng-template #editTmpl let-user>
+            <td><input type="text" [(ngModel)]="selected.employeeId" /></td>
+            <td><input type="text" [(ngModel)]="selected.firstName" /></td>
+            <td><input type="text" [(ngModel)]="selected.lastName" /></td>
+            <td>
+                <button  class="btn btn-success"  (click)="saveUser(user)">Save</button>
+                <button  class="btn btn-primary" (click)="resetUser()">Cancel</button>
+            </td>
+        </ng-template>
     </div>
 </div>

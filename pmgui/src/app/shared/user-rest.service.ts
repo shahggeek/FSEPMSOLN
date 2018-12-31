@@ -21,6 +21,7 @@ export class UserRestService {
   }
 
   addUser(user :User){
+    console.log(user)
     return this.httpClient.post('http://localhost:8080/users',user);
   }
 

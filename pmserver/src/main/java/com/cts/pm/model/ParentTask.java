@@ -15,10 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
 @Table(name = "PARENT_TASK",uniqueConstraints = { @UniqueConstraint(columnNames = { "parentId" }) })
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class ParentTask implements Serializable {
 
 	@Id
@@ -30,7 +34,8 @@ public class ParentTask implements Serializable {
 	private String parentTaskName;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "parentTask")
-	@JsonBackReference(value="parent-task")
+	//@JsonBackReference(value="parent-task")
+	@JsonIgnore
 	private Set<Task> tasks;
 	
 	public long getParentId() {

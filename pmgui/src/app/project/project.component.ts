@@ -14,9 +14,15 @@ export class ProjectComponent implements OnInit {
 
   projects : Project [] = [];
   users : User [] = [];
-  
+  selected: Project;
+  project: Project = { projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
+
   @ViewChild("outputAllProjects", {read: ViewContainerRef}) outputAllProjectsRef: ViewContainerRef;
   @ViewChild("allProjects", {read: TemplateRef}) allProjectsRef: TemplateRef<any>;
+
+  @ViewChild('displayTmpl') displayTmpl: TemplateRef<any>;
+  @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
+  @ViewChild('userstable', {read: TemplateRef}) userstable: TemplateRef<any>;
   
   constructor(private projectRestService : ProjectRestService, private userRestService : UserRestService) { }
 
@@ -24,20 +30,20 @@ export class ProjectComponent implements OnInit {
     this.getAllProjects();
   }
 
-  ngAfterContentInit() {
-    this.outputAllProjectsRef.createEmbeddedView(this.allProjectsRef);
-  }
-
   private rerender() {
     this.getAllProjects();
     this.outputAllProjectsRef.clear();
-    this.outputAllProjectsRef.createEmbeddedView(this.allProjectsRef);
   }
 
 
   onAddProject(form : NgForm){
-    console.log(form.value);
-    const value = form.value;
+    this.projectRestService.addProject(this.project).subscribe(
+      (response : Response ) => {
+        this.rerender();
+      },
+      (error) => console.log(error)
+    );
+    form.resetForm();
   }
 
   getAllProjects(){
@@ -47,7 +53,6 @@ export class ProjectComponent implements OnInit {
     );
   }
 
-  
   getAllUsers(){
     this.userRestService.getAllUsers().subscribe(
       (users : any[]) => this.users = users,
@@ -57,6 +62,7 @@ export class ProjectComponent implements OnInit {
 
   editProject(project : Project){
     console.log("Edit project "+project.projectId);
+    this.selected = Object.assign({}, project);
   }
 
   deleteProject(projectId : number){
@@ -68,4 +74,30 @@ export class ProjectComponent implements OnInit {
       (error) => console.log(error)
     );
   }
+
+  
+  getTemplate(project:Project) {
+    return this.selected && this.selected.projectId == project.projectId ? 
+    this.editTmpl : this.displayTmpl;
+  }
+
+  saveUser(project:Project) {
+    project.projectName = this.selected.projectName;
+    project.startDate = this.selected.startDate;
+    project.endDate = this.selected.endDate;
+    project.priority = this.selected.priority;
+
+    this.projectRestService.updateProject(project).subscribe(
+      (response : Response ) => {
+        this.rerender();
+      },
+      (error) => console.log(error)
+    );
+    this.resetUser();
+  }
+
+  resetUser() {
+      this.selected = null;
+  }
+
 }

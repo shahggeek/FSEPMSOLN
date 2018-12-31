@@ -2,42 +2,42 @@
     <div class="row">
       <div class="col-md-6">
         <form (ngSubmit)="onAddTask(t)" #t="ngForm">
-          <div id="user-data">
+          <div id="task-data">
               <div class="form-group form-inline">
                   <label for="projectName">Project : </label>
-                  <input type="text" id="projectName" class="form-control" name="projectName" ngModel>
+                  <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="task.project.projectId">
                   <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
               <div class="form-group form-inline">
                   <label for="taskName">Task : </label>
-                  <input type="text" id="taskName" class="form-control" name="taskName" ngModel>
+                  <input type="text" id="taskName" class="form-control" name="taskName"  [(ngModel)]="task.taskName">
               </div>
               <div class="form-group form-inline">
                   <input #chkEnable ngModel type="checkbox"  id="isParent" class="form-control"  name="isParent" value="isParent">ParentTask
               </div>
               <div class="form-group form-inline">
                   <label for="priority">Priority : </label>
-                  <input [disabled]="chkEnable.checked"  type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value" ngModel>
+                  <input [disabled]="chkEnable.checked"  type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value"  [(ngModel)]="task.priority">
                   <output name="priorityValue" id="priorityValue">0</output>
               </div>
               <div class="form-group form-inline">
-                  <label for="parentTask">Parent Task : </label>
-                  <input type="text" [disabled]="chkEnable.checked"  id="parentTask" class="form-control" name="parentTask" ngModel>
+                  <label for="parentId">Parent Task : </label>
+                  <input type="text" [disabled]="chkEnable.checked"  id="parentId" class="form-control" name="parentId"  [(ngModel)]="task.parentTask.parentId">
                   <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
               <div class="form-group form-inline">
                   <label for="startDate">StartDate : </label>
-                  <input type="date" [disabled]="chkEnable.checked" name="startDate" ngModel/>
+                  <input type="date" [disabled]="chkEnable.checked" name="startDate" [(ngModel)]="task.startDate"/>
                   <label for="endDate">EndDate : </label>
-                  <input type="date" [disabled]="chkEnable.checked" name="endDate" ngModel/>
+                  <input type="date" [disabled]="chkEnable.checked" name="endDate" [(ngModel)]="task.endDate"/>
               </div>
               <div class="form-group form-inline">
                   <label for="userId">User : </label>
-                  <input type="text" id="userId" class="form-control" name="userId" ngModel>
+                  <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="task.user.userId">
                   <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
@@ -49,18 +49,44 @@
       </div>
     </div>
 
-    <div class="row">
-        <hr>
-        <h4>All Tasks</h4>
-        <hr>
-        <ng-container #outputAllTasks >
-        </ng-container>
-        <ng-template #allTasks>
-                <ul class="list-group" *ngFor="let task of tasks">
-                        <li class="list-group-item">(Task : {{task.taskName}} {{task.project?.projectName}} {{task.parentTask?.parentTaskName}} )</li>
-                        <button class="btn btn-warning" (click)="editTask(task)" type="edit">Edit</button>
-                        <button class="btn btn-danger"  (click)="deleteTask(task.taskId)" type="delete">Delete</button>
-                </ul>
-        </ng-template>
-    </div>
+    <div class="table-responsive">
+            <ng-container #outputAllTasks >
+                <hr>
+                <h3>All Tasks</h3>
+                <table class="table table-bordered table-striped" id="taskstable">
+                    <thead>
+    
+                    </thead>
+                    <tbody>
+                            <tr *ngFor="let task of tasks; let i = index">
+                                    <ng-template [ngTemplateOutlet]="getTemplate(task)" 
+                                    [ngTemplateOutletContext]="{ $implicit: task, index: i }"></ng-template>
+                             </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+            <ng-template #displayTmpl let-task>
+                <td>{{task.taskName}}</td>
+                <td>{{task.startDate}}</td>
+                <td>{{task.endDate}}</td>
+                <td>{{task.priority}}</td>
+                <td>{{task.status}}</td>
+                <td>
+                    <button  class="btn btn-warning" (click)="editTask(task)">Edit</button>
+                    <button  class="btn btn-danger" (click)="deleteTask(task.taskId)">Delete</button>
+                </td>
+            </ng-template>
+            
+                <ng-template #editTmpl let-task>
+                    <td><input type="text" [(ngModel)]="selected.taskName" /></td>
+                    <td><input type="date" [(ngModel)]="selected.startDate" /></td>
+                    <td><input type="date" [(ngModel)]="selected.endDate" /></td>
+                    <td><input type="text" [(ngModel)]="selected.priority" /></td>
+                    <td><input type="text" [(ngModel)]="selected.status" /></td>
+                <td>
+                    <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
+                    <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
+                </td>
+            </ng-template>
+        </div>
 </div>

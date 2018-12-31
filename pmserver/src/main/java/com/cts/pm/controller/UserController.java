@@ -32,7 +32,9 @@ public class UserController {
 	
 	@RequestMapping(value="/users", method=RequestMethod.GET)
 	public ResponseEntity<List<User>> getAllUsers(){
-		return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK);
+		List<User> allUsers = userService.getAllUsers();
+		LOGGER.info("Users count: "+allUsers.size());
+		return new ResponseEntity<List<User>>(allUsers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
@@ -64,7 +66,7 @@ public class UserController {
 		currentUser.setFirstName(user.getFirstName());
 		currentUser.setLastName(user.getLastName());
 		currentUser.setEmployeeId(user.getEmployeeId());
-		userService.updateUser(user);
+		userService.updateUser(currentUser);
 		LOGGER.info("Updated User "+userId);
 		return new ResponseEntity<User>(HttpStatus.OK);
    	}

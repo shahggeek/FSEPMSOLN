@@ -17,8 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.cts.pm.exceptions.DataAccessException;
+import com.cts.pm.model.ParentTask;
+import com.cts.pm.model.Project;
 import com.cts.pm.model.Task;
+import com.cts.pm.model.User;
+import com.cts.pm.service.ParentTaskService;
+import com.cts.pm.service.ProjectService;
 import com.cts.pm.service.TaskService;
+import com.cts.pm.service.UserService;
 
 @RestController
 @CrossOrigin
@@ -29,6 +35,14 @@ public class TaskController {
 	@Autowired
 	TaskService taskService;
 	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	ParentTaskService parentService;
+	
+	@Autowired
+	ProjectService projectService;
 	
 	@RequestMapping(value="/tasks", method=RequestMethod.GET)
 	public ResponseEntity<List<Task>> getAllTasks(){
@@ -46,7 +60,12 @@ public class TaskController {
 	
 	@RequestMapping(value = "/tasks", method = RequestMethod.POST)
    	public ResponseEntity<?> addTask(@RequestBody Task task, UriComponentsBuilder ucBuilder){
+		Long userId = task.getUser().getUserId();
+		User user = userService.getUser(userId);
+		task.setUser(user);
 		Long createdTaskId = taskService.addNewTask(task);
+		user.setTask(task);
+		userService.updateUser(user);
 		LOGGER.info("Added TaskId:"+createdTaskId);
 		HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/tasks/{id}").buildAndExpand(createdTaskId).toUri());

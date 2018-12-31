@@ -18,7 +18,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.cts.pm.exceptions.DataAccessException;
 import com.cts.pm.model.Project;
+import com.cts.pm.model.User;
 import com.cts.pm.service.ProjectService;
+import com.cts.pm.service.UserService;
 
 @RestController
 @CrossOrigin
@@ -28,6 +30,9 @@ public class ProjectController {
 	
 	@Autowired
 	ProjectService projectService;
+	
+	@Autowired
+	UserService userService;
 	
 	
 	@RequestMapping(value="/projects", method=RequestMethod.GET)
@@ -46,8 +51,13 @@ public class ProjectController {
 	
 	@RequestMapping(value = "/projects", method = RequestMethod.POST)
    	public ResponseEntity<?> addProject(@RequestBody Project project, UriComponentsBuilder ucBuilder){
+		Long userId = project.getUser().getUserId();
+		User user = userService.getUser(userId);
+		project.setUser(user);
 		Long createdProjectId = projectService.addNewProject(project);
 		LOGGER.info("Added ProjectId:"+createdProjectId);
+		user.setProject(project);
+		userService.updateUser(user);
 		HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/projects/{id}").buildAndExpand(createdProjectId).toUri());
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);

@@ -5,44 +5,68 @@
           <div id="user-data">
               <div class="form-group form-inline">
                   <label for="projectName">Project : </label>
-                  <input type="text" id="projectName" class="form-control" name="projectName" ngModel>
+                  <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="project.projectName">
               </div>
               <div class="form-group form-inline">
                   <input #chkEnable ngModel type="checkbox"  id="setStartEndDate" class="form-control"  name="setStartEndDate" value="SetDates">Set Start and End date<br>
-                  <input type="date" [disabled]="!chkEnable.checked" name="startDate" ngModel/>
-                  <input type="date" [disabled]="!chkEnable.checked" name="endDate" ngModel/>
+                  <input type="date" [disabled]="!chkEnable.checked" name="startDate" [(ngModel)]="project.startDate"/>
+                  <input type="date" [disabled]="!chkEnable.checked" name="endDate" [(ngModel)]="project.endDate"/>
               </div>
               <div class="form-group form-inline">
                   <label for="priority">Priority : </label>
-                  <input type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value" ngModel>
+                  <input type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value" [(ngModel)]="project.priority">
                   <output name="priorityValue" id="priorityValue">0</output>
               </div>
               <div class="form-group form-inline">
                   <label for="userId">Manager : </label>
-                  <input type="text" id="userId" class="form-control" name="userId" ngModel>
+                  <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="project.user.userId">
                   <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
           </div>
           <button class="btn btn-primary" type="submit">Add</button>
-          <button class="btn btn-primary" type="reset">Reset</button>
+          <button class="btn btn-primary" (click)="resetForm()" type="reset">Reset</button>
         </form>
       </div>
     </div>
 
-    <div class="row">
-        <hr>
-        <h4>All Projects</h4>
-        <hr>
-        <ng-container #outputAllProjects >
-        </ng-container>
-        <ng-template #allProjects>
-                <ul class="list-group" *ngFor="let project of projects">
-                        <li class="list-group-item">(Project : {{project.projectName}} )</li>
-                        <button class="btn btn-warning" (click)="editProject(project)" type="edit">Edit</button>
-                        <button class="btn btn-danger"  (click)="deleteProject(project.projectId)" type="delete">Delete</button>
-                </ul>
-        </ng-template>
-    </div>
+    <div class="table-responsive">
+            <ng-container #outputAllProjects >
+                <hr>
+                <h3>All Projects</h3>
+                <table class="table table-bordered table-striped" id="projectstable">
+                    <thead>
+    
+                    </thead>
+                    <tbody>
+                            <tr *ngFor="let project of projects; let i = index">
+                                    <ng-template [ngTemplateOutlet]="getTemplate(project)" 
+                                    [ngTemplateOutletContext]="{ $implicit: project, index: i }"></ng-template>
+                             </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+            <ng-template #displayTmpl let-project>
+                <td>{{project.projectName}}</td>
+                <td>{{project.startDate}}</td>
+                <td>{{project.endDate}}</td>
+                <td>{{project.priority}}</td>
+                <td>
+                    <button  class="btn btn-warning" (click)="editProject(project)">Edit</button>
+                    <button  class="btn btn-danger" (click)="deleteProject(project.projectId)">Delete</button>
+                </td>
+            </ng-template>
+            
+                <ng-template #editTmpl let-project>
+                <td><input type="text" [(ngModel)]="selected.projectName" /></td>
+                <td><input type="date" [(ngModel)]="selected.startDate" /></td>
+                <td><input type="date" [(ngModel)]="selected.endDate" /></td>
+                <td><input type="text" [(ngModel)]="selected.priority" /></td>
+                <td>
+                    <button  class="btn btn-success"  (click)="saveUser(project)">Save</button>
+                    <button  class="btn btn-primary" (click)="resetUser()">Cancel</button>
+                </td>
+            </ng-template>
+        </div>
 </div>

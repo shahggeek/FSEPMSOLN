@@ -17,12 +17,16 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
 @Table(name = "PROJECT",uniqueConstraints = { @UniqueConstraint(columnNames = { "projectId" }) })
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Project implements Serializable {
 
 	@Id
@@ -43,11 +47,12 @@ public class Project implements Serializable {
 	private int priority;
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy = "project")
-	@JsonBackReference(value="project-tasks")
+	//@JsonBackReference(value="project-tasks")
+	@JsonIgnore
 	private Set<Task> tasks;
 	
 	@OneToOne(fetch = FetchType.LAZY,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "project")
-	@JsonBackReference(value="user-project")
+	//@JsonBackReference(value="user-project")
 	private User user;
 	
 	public long getProjectId() {

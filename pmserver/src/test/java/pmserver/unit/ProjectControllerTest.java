@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.cts.pm.model.Project;
+import com.cts.pm.model.User;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ProjectControllerTest extends AbstractTest {
 
@@ -27,12 +28,27 @@ public class ProjectControllerTest extends AbstractTest {
 
 	@Test
 	public void addProject() throws Exception {
+		String usersuri = "/users";
+		User userOne = new User();
+        userOne.setEmployeeId(111);
+        userOne.setFirstName("FirsTtestUser");
+        userOne.setLastName("TestLast");
+        
+		String inputUserJson = super.mapToJson(userOne);
+		MvcResult mvcUserResult = mvc.perform(
+				MockMvcRequestBuilders.post(usersuri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputUserJson))
+				.andReturn();
+
+		String [] userlocationTulips = mvcUserResult.getResponse().getHeader("Location").split("/");
+		String userId = userlocationTulips[userlocationTulips.length-1];
+		
 		String uri = "/projects";
 		Project projectOne = new Project();
         projectOne.setProjectName("Test Project 1");
         projectOne.setPriority(1);
         projectOne.setStartDate(new Date());
         projectOne.setEndDate(new Date());
+        projectOne.setUser(userOne);
         
 		String inputJson = super.mapToJson(projectOne);
 		MvcResult mvcResult = mvc.perform(
@@ -43,6 +59,9 @@ public class ProjectControllerTest extends AbstractTest {
 		String [] locationTulips = mvcResult.getResponse().getHeader("Location").split("/");
 		projectId = locationTulips[locationTulips.length-1];
 		assertEquals(201, status);
+		
+		usersuri = "/users/"+userId;
+		mvcUserResult = mvc.perform(MockMvcRequestBuilders.delete(usersuri)).andReturn();
 	}
 	
 	@Test

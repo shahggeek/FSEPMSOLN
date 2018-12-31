@@ -11,9 +11,14 @@ import { User } from '../model/user.model';
 export class UserComponent implements OnInit {
 
   users : User [] = [];
-
+  selected: User;
   @ViewChild("outputAllUsers", {read: ViewContainerRef}) outputAllUsersRef: ViewContainerRef;
   @ViewChild("allUsers", {read: TemplateRef}) allUsersRef: TemplateRef<any>;
+
+  @ViewChild('displayTmpl') displayTmpl: TemplateRef<any>;
+  @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
+  @ViewChild('userstable', {read: TemplateRef}) userstable: TemplateRef<any>;
+  
 
   constructor(private userRestService : UserRestService) { }
 
@@ -21,19 +26,20 @@ export class UserComponent implements OnInit {
     this.getAllUsers();
   }
 
-  ngAfterContentInit() {
-    this.outputAllUsersRef.createEmbeddedView(this.allUsersRef);
-  }
-
   private rerender() {
     this.getAllUsers();
     this.outputAllUsersRef.clear();
-    this.outputAllUsersRef.createEmbeddedView(this.allUsersRef);
   }
 
   onAddUser(form : NgForm){
     console.log(form.value);
-    const value = form.value;
+    this.userRestService.addUser(form.value).subscribe(
+      (response : Response ) => {
+        this.rerender();
+      },
+      (error) => console.log(error)
+    );
+    form.resetForm();
   }
 
   resetForm(){
@@ -48,7 +54,8 @@ export class UserComponent implements OnInit {
   }
 
   editUser(user : User){
-    console.log("Edit User"+user);
+    console.log("Edit User"+user.firstName+" "+user.lastName);
+    this.selected = Object.assign({}, user);
   }
 
   deleteUser(userId : number){
@@ -59,6 +66,28 @@ export class UserComponent implements OnInit {
       },
       (error) => console.log(error)
     );
-   
+  }
+
+  getTemplate(user:User) {
+    return this.selected && this.selected.userId == user.userId ? 
+    this.editTmpl : this.displayTmpl;
+  }
+
+  saveUser(user:User) {
+    console.log("Save User"+this.selected.userId+" "+this.selected.firstName+" "+this.selected.lastName);
+    user.employeeId = this.selected.employeeId;
+    user.firstName = this.selected.firstName;
+    user.lastName = this.selected.lastName;
+    this.userRestService.updateUser(user).subscribe(
+      (response : Response ) => {
+        this.rerender();
+      },
+      (error) => console.log(error)
+    );
+    this.resetUser();
+  }
+
+  resetUser() {
+      this.selected = null;
   }
 }

@@ -7,6 +7,7 @@ import { User } from '../model/user.model';
 import { ParentTaskService } from '../shared/parent-task.service';
 import { ParentTask } from '../model/parenttask.model';
 import { NgForm } from '@angular/forms';
+import { Project } from '../model/project.model';
 
 @Component({
   selector: 'app-task',
@@ -18,9 +19,25 @@ export class TaskComponent implements OnInit {
   tasks : Task [] = [];
   users : User [] = [];
   parenttasks : ParentTask [] = [];
-  
+
+  isParent = false;
+  selected: Task;
+
+  task: Task = { taskId:0,  taskName: '', startDate: '', endDate:'', priority:0, status:'',
+   project:{ projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} },
+   parentTask:{parentId:0, parentTaskName:''},
+   user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
+
+   parentTask: ParentTask = {parentId:0, parentTaskName:''};
+
   @ViewChild("outputAllTasks", {read: ViewContainerRef}) outputAllTasksRef: ViewContainerRef;
   @ViewChild("allTasks", {read: TemplateRef}) allTasksRef: TemplateRef<any>;
+  
+  
+  @ViewChild('displayTmpl') displayTmpl: TemplateRef<any>;
+  @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
+  @ViewChild('taskstable', {read: TemplateRef}) taskstable: TemplateRef<any>;
+  
   
   constructor(private taskRestService : TaskRestService, 
     private userRestService : UserRestService,
@@ -31,19 +48,31 @@ export class TaskComponent implements OnInit {
     this.getAllTasks();
   }
 
-  ngAfterContentInit() {
-    this.outputAllTasksRef.createEmbeddedView(this.allTasksRef);
-  }
-
   private rerender() {
     this.getAllTasks();
     this.outputAllTasksRef.clear();
-    this.outputAllTasksRef.createEmbeddedView(this.allTasksRef);
   }
 
   onAddTask(form : NgForm){
-    console.log(form.value);
-    const value = form.value;
+    this.isParent = form.value.isParent;
+    if(!this.isParent){
+      this.taskRestService.addTask(this.task).subscribe(
+        (response : Response ) => {
+          this.rerender();
+        },
+        (error) => console.log(error)
+      );
+    }else{
+      this.parentTask.parentId = 0;
+      this.parentTask.parentTaskName = form.value.taskName;
+      this.parentTaskRestService.addTask(this.parentTask).subscribe(
+        (response : Response ) => {
+          this.rerender();
+        },
+        (error) => console.log(error)
+      );
+    }
+    form.resetForm();
   }
 
   getAllTasks(){
@@ -69,6 +98,7 @@ export class TaskComponent implements OnInit {
 
   editTask(task : Task){
     console.log("Edit task "+task.taskId);
+    this.selected = Object.assign({}, task);
   }
 
   deleteTask(taskId : number){
@@ -80,4 +110,33 @@ export class TaskComponent implements OnInit {
       (error) => console.log(error)
     );
   }
+
+  
+  getTemplate(task:Task) {
+    return this.selected && this.selected.taskId == task.taskId ? 
+    this.editTmpl : this.displayTmpl;
+  }
+
+  saveTask(task:Task) {
+    task.taskName = this.selected.taskName;
+    task.startDate = this.selected.startDate;
+    task.endDate = this.selected.endDate;
+    task.priority = this.selected.priority;
+    task.status = this.selected.status;
+    if(!this.isParent){
+      this.taskRestService.updateTask(task).subscribe(
+        (response : Response ) => {
+          this.rerender();
+        },
+        (error) => console.log(error)
+      );
+    }
+   
+    this.resetTask();
+  }
+
+  resetTask() {
+      this.selected = null;
+  }
+
 }
