@@ -82,4 +82,31 @@ export class SortDirective implements OnInit {
     });
     return tempArray;
   }
+
+  sortArrayDate (): Array<any> {
+    let tempArray: Array<any> = this.data;
+    tempArray.sort((a, b) => {
+      let aKey = a[this.key];
+        let date1: Date = new Date(a[this.key]);
+        let date2: Date = new Date(b[this.key]);
+        if (this.toggleSort) {
+          if (date1 < date2) {
+            return -1;
+          }
+          if (date1 > date2) {
+            return 1;
+          }
+        }
+        else {
+          if (date1 > date2) {
+            return -1;
+          }
+          if (date1 < date2) {
+            return 1;
+          }
+        }
+      return 0;
+    });
+    return tempArray;
+  }
 }

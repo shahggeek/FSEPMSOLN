@@ -1,52 +1,55 @@
 <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <hr>
         <h3>Add Task</h3>
         <form (ngSubmit)="onAddTask(t)" #t="ngForm">
           <div id="task-data">
-              <div class="form-group form-inline">
-                  <label for="projectName">Project : </label>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="projectName"  style="width: 20.1%;">Project : </label>
                   <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="task.project.projectId">
                   <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
-              <div class="form-group form-inline">
-                  <label for="taskName">Task : </label>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="taskName"  style="width: 20.1%;">Task : </label>
                   <input type="text" id="taskName" class="form-control" name="taskName"  [(ngModel)]="task.taskName">
               </div>
-              <div class="form-group form-inline">
-                  <input #chkEnable ngModel type="checkbox"  id="isParent" class="form-control"  name="isParent" value="isParent">ParentTask
+              <div class="form-group form-inline" style="width: 100%;">
+                  <input #chkEnable ngModel type="checkbox"  id="isParent" class="form-control"  name="isParent" value="isParent">Parent Task
               </div>
-              <div class="form-group form-inline">
-                  <label for="priority">Priority : </label>
-                  <input [disabled]="chkEnable.checked"  type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value"  [(ngModel)]="task.priority">
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="priority"  style="width: 20.1%;">Priority : </label>
+                  <input [disabled]="chkEnable.checked" style="width: 55.1%;" type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value"  [(ngModel)]="task.priority">
                   <output name="priorityValue" id="priorityValue">0</output>
               </div>
-              <div class="form-group form-inline">
-                  <label for="parentId">Parent Task : </label>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="parentId"  style="width: 20.1%;">Parent Task : </label>
                   <input type="text" [disabled]="chkEnable.checked"  id="parentId" class="form-control" name="parentId"  [(ngModel)]="task.parentTask.parentId">
                   <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
-              <div class="form-group form-inline">
-                  <label for="startDate">StartDate : </label>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="startDate"  style="width: 20.1%;">StartDate : </label>
                   <input type="date" [disabled]="chkEnable.checked" name="startDate" [(ngModel)]="task.startDate"/>
-                  <label for="endDate">EndDate : </label>
+                  </div>
+                  <div class="form-group form-inline" style="width: 100%;">
+                    <label for="endDate"  style="width: 20.1%;">EndDate : </label>
                   <input type="date" [disabled]="chkEnable.checked" name="endDate" [(ngModel)]="task.endDate"/>
               </div>
-              <div class="form-group form-inline">
-                  <label for="userId">User : </label>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="userId"  style="width: 20.1%;">User : </label>
                   <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="task.user.userId">
                   <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
           </div>
-          <button class="btn btn-primary" type="submit">Add Task</button>
-          <button class="btn btn-primary" type="reset">Reset</button>
+          <div class="btn-toolbar">
+            <button class="btn btn-primary" type="submit">Add Task</button>
+            <button class="btn btn-primary" type="reset">Reset</button>
+           </div>
         </form>
       </div>
     </div>
@@ -74,8 +77,10 @@
                 <td>{{task.priority}}</td>
                 <td>{{task.status}}</td>
                 <td>
-                    <button  class="btn btn-warning" (click)="editTask(task)">Edit</button>
-                    <button  class="btn btn-danger" (click)="deleteTask(task.taskId)">Delete</button>
+                    <div class="btn-toolbar">
+                        <button  class="btn btn-warning" (click)="editTask(task)">Edit</button>
+                        <button  class="btn btn-danger" (click)="deleteTask(task.taskId)">Delete</button>
+                    </div>
                 </td>
             </ng-template>
             
@@ -86,8 +91,10 @@
                     <td><input type="text" [(ngModel)]="selected.priority" /></td>
                     <td><input type="text" [(ngModel)]="selected.status" /></td>
                 <td>
-                    <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
-                    <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
+                    <div class="btn-toolbar">
+                        <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
+                        <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
+                    </div>
                 </td>
             </ng-template>
         </div>

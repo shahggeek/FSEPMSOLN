@@ -1,26 +1,31 @@
 <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <hr>
         <h3>Add Project</h3>
         <form (ngSubmit)="onAddProject(p)" #p="ngForm">
           <div id="user-data">
-              <div class="form-group form-inline">
-                  <label for="projectName">Project : </label>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="projectName" style="width: 20.1%;">Project : </label>
                   <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="project.projectName">
               </div>
-              <div class="form-group form-inline">
-                  <input #chkEnable ngModel type="checkbox"  id="setStartEndDate" class="form-control"  name="setStartEndDate" value="SetDates">Set Start and End date<br>
+              <div class="form-group form-inline" style="width: 100%;">
+                    <input #chkEnable ngModel type="checkbox"  id="setStartEndDate" class="form-control"  name="setStartEndDate" value="SetDates">Set Start and End date<br>
+              </div>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="startDate" style="width: 20.1%;">StartDate : </label>
                   <input type="date" [disabled]="!chkEnable.checked" name="startDate" [(ngModel)]="project.startDate"/>
+                </div>
+                <div class="form-group form-inline" style="width: 100%;">  
+                  <label for="endDate" style="width: 20.1%;">EndDate : </label>
                   <input type="date" [disabled]="!chkEnable.checked" name="endDate" [(ngModel)]="project.endDate"/>
               </div>
-              <div class="form-group form-inline">
-                  <label for="priority">Priority : </label>
-                  <input type="range" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value" [(ngModel)]="project.priority">
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="priority" style="width: 20.1%;">Priority : </label>
+                  <input type="range" style="width: 50.1%;" id="priority" name="priority" min="1" max="30" value="0" step="1" oninput="priorityValue.value = priority.value" [(ngModel)]="project.priority">
                   <output name="priorityValue" id="priorityValue">0</output>
               </div>
-              <div class="form-group form-inline">
-                  <label for="userId">Manager : </label>
+              <div class="form-group form-inline" style="width: 100%;">
+                  <label for="userId" style="width: 20.1%;">Manager : </label>
                   <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="project.user.userId">
                   
                   <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
@@ -28,8 +33,10 @@
                   </button>
               </div>
           </div>
-          <button class="btn btn-primary" type="submit">Add</button>
-          <button class="btn btn-primary" (click)="resetForm()" type="reset">Reset</button>
+          <div class="btn-toolbar">
+            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-primary" (click)="resetForm()" type="reset">Reset</button>
+           </div>
         </form>
       </div>
     </div>
@@ -56,8 +63,10 @@
                 <td>{{project.endDate}}</td>
                 <td>{{project.priority}}</td>
                 <td>
-                    <button  class="btn btn-warning" (click)="editProject(project)">Edit</button>
-                    <button  class="btn btn-danger" (click)="deleteProject(project.projectId)">Delete</button>
+                    <div class="btn-toolbar">
+                        <button  class="btn btn-warning" (click)="editProject(project)">Edit</button>
+                        <button  class="btn btn-danger" (click)="deleteProject(project.projectId)">Delete</button>
+                    </div>
                 </td>
             </ng-template>
             
@@ -67,8 +76,10 @@
                 <td><input type="date" [(ngModel)]="selected.endDate" /></td>
                 <td><input type="text" [(ngModel)]="selected.priority" /></td>
                 <td>
-                    <button  class="btn btn-success"  (click)="saveUser(project)">Save</button>
-                    <button  class="btn btn-primary" (click)="resetUser()">Cancel</button>
+                    <div class="btn-toolbar">
+                        <button  class="btn btn-success"  (click)="saveUser(project)">Save</button>
+                        <button  class="btn btn-primary" (click)="resetUser()">Cancel</button>
+                    </div>
                 </td>
             </ng-template>
         </div>

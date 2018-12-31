@@ -1,25 +1,26 @@
 <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <hr>
         <h3>Add User</h3>
         <form (ngSubmit)="onAddUser(f)" #f="ngForm">
           <div id="user-data">
-              <div class="form-group form-inline">
-                  <label for="firstName">First Name : </label>
-                  <input type="text" id="firstName" class="form-control" name="firstName" ngModel>
+              <div class="form-group form-inline"  style="width: 100%;">
+                  <label for="firstName" style="width: 20.1%;">First Name : </label>
+                  <input type="text" id="firstName" class="form-control" name="firstName" required ngModel>
               </div>
-              <div class="form-group form-inline">
-                  <label for="lastName">Last Name : </label>
-                  <input type="text" id="lastName" class="form-control" name="lastName" ngModel>
+              <div class="form-group form-inline"  style="width: 100%;">
+                  <label for="lastName"  style="width: 20.1%;">Last Name : </label>
+                  <input type="text" id="lastName" class="form-control" name="lastName" required ngModel>
               </div>
-              <div class="form-group form-inline">
-                  <label for="employeeId">Employee Id : </label>
-                  <input type="text" id="employeeId" class="form-control" name="employeeId" ngModel>
+              <div class="form-group form-inline"  style="width: 100%;">
+                  <label for="employeeId"  style="width: 20.1%;">Employee Id : </label>
+                  <input type="text" id="employeeId" class="form-control" name="employeeId" required ngModel>
               </div>
           </div>
-          <button class="btn btn-primary" type="submit">Add</button>
-          <button class="btn btn-primary" type="reset">Reset</button>
+          <div class="btn-toolbar">
+              <button class="btn btn-primary" type="submit">Add</button>
+              <button class="btn btn-primary" type="reset">Reset</button>
+           </div>  
         </form>
       </div>
     </div>
@@ -29,11 +30,18 @@
             <hr>
             <h3>All Users</h3>
             <div class="row">
+                    <div class="col-md-3">
+                        <h4> Search
+                                <input type="text" placeholder="First Name" [(ngModel)]="userSearch">
+                        </h4>
+                    </div>
                     <div class="col-md-6">
                         <h4>Sort By
-                        <button  class="btn btn-success" sortColumn [sortKey]="'firstName'" [sortType]="'string'" [data]="users">First Name</button>
-                        <button  class="btn btn-success" sortColumn [sortKey]="'lastName'"  [sortType]="'string'" [data]="users">Last Name</button>
-                        <button  class="btn btn-success" sortColumn [sortKey]="'employeeId'"  [sortType]="'number'" [data]="users">Employee Id</button>
+                        <div class="btn-toolbar">
+                            <button  class="btn btn-success" sortColumn [sortKey]="'firstName'" [sortType]="'string'" [data]="users">First Name</button>
+                            <button  class="btn btn-success" sortColumn [sortKey]="'lastName'"  [sortType]="'string'" [data]="users">Last Name</button>
+                            <button  class="btn btn-success" sortColumn [sortKey]="'employeeId'"  [sortType]="'number'" [data]="users">Employee Id</button>
+                        </div>
                         </h4>
                     </div>
             </div>
@@ -43,7 +51,7 @@
 
                 </thead>
                 <tbody>
-                        <tr *ngFor="let user of users; let i = index">
+                        <tr *ngFor="let user of users | userfilter:userSearch; let i = index">
                                 <ng-template [ngTemplateOutlet]="getTemplate(user)" 
                                 [ngTemplateOutletContext]="{ $implicit: user, index: i }"></ng-template>
                          </tr>
@@ -55,8 +63,10 @@
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>
-                <button  class="btn btn-warning" (click)="editUser(user)">Edit</button>
-                <button  class="btn btn-danger" (click)="deleteUser(user.userId)">Delete</button>
+                <div class="btn-toolbar">
+                    <button  class="btn btn-warning" (click)="editUser(user)">Edit</button>
+                    <button  class="btn btn-danger" (click)="deleteUser(user.userId)">Delete</button>
+                </div>
             </td>
         </ng-template>
         
@@ -65,8 +75,10 @@
             <td><input type="text" [(ngModel)]="selected.firstName" /></td>
             <td><input type="text" [(ngModel)]="selected.lastName" /></td>
             <td>
-                <button  class="btn btn-success"  (click)="saveUser(user)">Save</button>
-                <button  class="btn btn-primary" (click)="resetUser()">Cancel</button>
+                <div class="btn-toolbar">
+                    <button  class="btn btn-success"  (click)="saveUser(user)">Save</button>
+                    <button  class="btn btn-primary" (click)="resetUser()">Cancel</button>
+                </div>
             </td>
         </ng-template>
     </div>

@@ -105,6 +105,7 @@ export class ProjectComponent implements OnInit {
   submitModalValue(event : any){
     console.log(this.checkedUser.userId);
   }
+  
   changeCheckbox(event : any, userId : number){
     if( event.target.checked){
       this.project.user.userId = userId;

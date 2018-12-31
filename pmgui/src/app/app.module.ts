@@ -9,6 +9,7 @@ import { TaskComponent } from './task/task.component';
 import { ProjectComponent } from './project/project.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SortDirective } from './shared/sortdata.directive';
+import { UserFilterPipe } from './shared/userfilter.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SortDirective } from './shared/sortdata.directive';
     UserComponent,
     TaskComponent,
     ProjectComponent,
-    SortDirective
+    SortDirective,
+    UserFilterPipe
   ],
   imports: [
     BrowserModule,
