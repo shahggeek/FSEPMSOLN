@@ -59,8 +59,8 @@
             </ng-container>
             <ng-template #displayTmpl let-project>
                 <td>{{project.projectName}}</td>
-                <td>{{project.startDate}}</td>
-                <td>{{project.endDate}}</td>
+                <td>{{project.startDate | date: 'shortDate'}}</td>
+                <td>{{project.endDate | date: 'shortDate'}}</td>
                 <td>{{project.priority}}</td>
                 <td>
                     <div class="btn-toolbar">
