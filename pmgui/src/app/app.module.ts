@@ -12,6 +12,7 @@ import { SortDirective } from './shared/sortdata.directive';
 import { UserFilterPipe } from './shared/userfilter.pipe';
 import { ViewTaskComponent } from './view-task/view-task.component';
 import { TaskFilterPipe } from './shared/taskfilter.pipe';
+import { ProjectFilterPipe } from './shared/projectfilter.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TaskFilterPipe } from './shared/taskfilter.pipe';
     SortDirective,
     UserFilterPipe,
     TaskFilterPipe,
+    ProjectFilterPipe,
     ViewTaskComponent
   ],
   imports: [

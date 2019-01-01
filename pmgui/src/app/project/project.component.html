@@ -45,12 +45,28 @@
             <ng-container #outputAllProjects >
                 <hr>
                 <h3>All Projects</h3>
+                <div class="row">
+                        <div class="col-md-3">
+                            <h4> Search
+                                    <input type="text" placeholder="Project Name" [(ngModel)]="projectSearch">
+                            </h4>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Sort By
+                            <div class="btn-toolbar">
+                                    <button  class="btn btn-success" sortColumn [sortKey]="'startDate'" [sortType]="'string'" [data]="projects">Start Date</button>
+                                    <button  class="btn btn-success" sortColumn [sortKey]="'endDate'"  [sortType]="'string'" [data]="projects">End Date</button>
+                                    <button  class="btn btn-success" sortColumn [sortKey]="'priority'"  [sortType]="'number'" [data]="projects">Priority</button>
+                            </div>
+                            </h4>
+                        </div>
+                </div>
                 <table class="table table-bordered table-striped" id="projectstable">
                     <thead>
     
                     </thead>
                     <tbody>
-                            <tr *ngFor="let project of projects; let i = index">
+                            <tr *ngFor="let project of projects | projectfilter:projectSearch; let i = index">
                                     <ng-template [ngTemplateOutlet]="getTemplate(project)" 
                                     [ngTemplateOutletContext]="{ $implicit: project, index: i }"></ng-template>
                              </tr>

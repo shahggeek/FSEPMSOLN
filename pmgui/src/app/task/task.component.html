@@ -53,49 +53,4 @@
         </form>
       </div>
     </div>
-
-    <div class="table-responsive">
-            <ng-container #outputAllTasks >
-                <hr>
-                <h3>All Tasks</h3>
-                <table class="table table-bordered table-striped" id="taskstable">
-                    <thead>
-    
-                    </thead>
-                    <tbody>
-                            <tr *ngFor="let task of tasks; let i = index">
-                                    <ng-template [ngTemplateOutlet]="getTemplate(task)" 
-                                    [ngTemplateOutletContext]="{ $implicit: task, index: i }"></ng-template>
-                             </tr>
-                    </tbody>
-                </table>
-            </ng-container>
-            <ng-template #displayTmpl let-task>
-                <td>{{task.taskName}}</td>
-                <td>{{task.startDate}}</td>
-                <td>{{task.endDate}}</td>
-                <td>{{task.priority}}</td>
-                <td>{{task.status}}</td>
-                <td>
-                    <div class="btn-toolbar">
-                        <button  class="btn btn-warning" (click)="editTask(task)">Edit</button>
-                        <button  class="btn btn-danger" (click)="deleteTask(task.taskId)">Delete</button>
-                    </div>
-                </td>
-            </ng-template>
-            
-                <ng-template #editTmpl let-task>
-                    <td><input type="text" [(ngModel)]="selected.taskName" /></td>
-                    <td><input type="date" [(ngModel)]="selected.startDate" /></td>
-                    <td><input type="date" [(ngModel)]="selected.endDate" /></td>
-                    <td><input type="text" [(ngModel)]="selected.priority" /></td>
-                    <td><input type="text" [(ngModel)]="selected.status" /></td>
-                <td>
-                    <div class="btn-toolbar">
-                        <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
-                        <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
-                    </div>
-                </td>
-            </ng-template>
-        </div>
 </div>
