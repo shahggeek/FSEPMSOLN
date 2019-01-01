@@ -24,14 +24,14 @@ export class TaskComponent implements OnInit {
   selected: Task;
 
   task: Task = { taskId:0,  taskName: '', startDate: '', endDate:'', priority:0, status:'',
-   project:{ projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} },
-   parentTask:{parentId:0, parentTaskName:''},
-   user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
+  project:{ projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} },
+  parentTask:{parentId:0, parentTaskName:''},
+  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
 
-   parentTask: ParentTask = {parentId:0, parentTaskName:''};
+  parentTask: ParentTask = {parentId:0, parentTaskName:''};
+  error:any={isError:false,errorMessage:''};
 
   @ViewChild("outputAllTasks", {read: ViewContainerRef}) outputAllTasksRef: ViewContainerRef;
-  @ViewChild("allTasks", {read: TemplateRef}) allTasksRef: TemplateRef<any>;
   
   
   @ViewChild('displayTmpl') displayTmpl: TemplateRef<any>;
@@ -175,4 +175,11 @@ export class TaskComponent implements OnInit {
     }
   }
 
+  compareTwoDates(endDateRef : HTMLInputElement){
+    if(new Date(this.task.endDate) < new Date(this.task.startDate)){
+       this.error={isError:true,errorMessage:'End Date cant be before start date'};
+    }else{
+      this.error ={isError:false,errorMessage:''};
+    }
+  }
 }

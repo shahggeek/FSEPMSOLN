@@ -3,7 +3,7 @@ import { ProjectRestService } from '../shared/project-rest.service';
 import { Project } from '../model/project.model';
 import { UserRestService } from '../shared/user-rest.service';
 import { User } from '../model/user.model';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-project',
@@ -15,10 +15,12 @@ export class ProjectComponent implements OnInit {
   projects : Project [] = [];
   users : User [] = [];
   selected: Project;
-  project: Project = { projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
-
+  project: Project = { projectId:0,  projectName: '', startDate: '' , endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
+  tomorrow : Date = new Date();
+  today : Date = new Date();
+  error:any={isError:false,errorMessage:''};
+  
   @ViewChild("outputAllProjects", {read: ViewContainerRef}) outputAllProjectsRef: ViewContainerRef;
-  @ViewChild("allProjects", {read: TemplateRef}) allProjectsRef: TemplateRef<any>;
 
   @ViewChild('displayTmpl') displayTmpl: TemplateRef<any>;
   @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
@@ -30,6 +32,15 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.getAllProjects();
     this.getAllUsers();
+    this.setDefaultDates();
+  }
+
+  private  setDefaultDates(){
+    this.tomorrow  = new Date();
+    this.today = new Date();
+    this.tomorrow.setDate(this.today.getDate() + 1);
+    this.project.startDate = this.today.toISOString().slice(0,10);
+    this.project.endDate = this.tomorrow.toISOString().slice(0,10);
   }
 
   private rerender() {
@@ -46,6 +57,7 @@ export class ProjectComponent implements OnInit {
       (error) => console.log(error)
     );
     form.resetForm();
+    this.setDefaultDates();
   }
 
   getAllProjects(){
@@ -111,6 +123,14 @@ export class ProjectComponent implements OnInit {
       this.project.user.userId = userId;
     }else{
       this.project.user.userId = null;
+    }
+  }
+
+  compareTwoDates(endDateRef : HTMLInputElement){
+    if(new Date(this.project.endDate) < new Date(this.project.startDate)){
+       this.error={isError:true,errorMessage:'End Date cant be before start date'};
+    }else{
+      this.error ={isError:false,errorMessage:''};
     }
   }
 

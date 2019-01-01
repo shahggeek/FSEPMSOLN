@@ -6,18 +6,24 @@
           <div id="user-data">
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="projectName" style="width: 20.1%;">Project : </label>
-                  <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="project.projectName">
+                  <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="project.projectName" required #pname="ngModel">
+                  <span class="help-block" *ngIf="!pname.valid && pname.touched">Please enter valid project name</span>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                     <input #chkEnable ngModel type="checkbox"  id="setStartEndDate" class="form-control"  name="setStartEndDate" value="SetDates">Set Start and End date<br>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="startDate" style="width: 20.1%;">StartDate : </label>
-                  <input type="date" [disabled]="!chkEnable.checked" name="startDate" [(ngModel)]="project.startDate"/>
+                  <input type="date" [disabled]="!chkEnable.checked" name="startDate" [ngModel]="project.startDate | date:'yyyy-MM-dd'"  (ngModelChange)="project.startDate =$event" required #startdateref="ngModel"/>
+                  <span class="help-block" *ngIf="!startdateref.valid && startdateref.touched">Please enter valid start date</span>
                 </div>
                 <div class="form-group form-inline" style="width: 100%;">  
                   <label for="endDate" style="width: 20.1%;">EndDate : </label>
-                  <input type="date" [disabled]="!chkEnable.checked" name="endDate" [(ngModel)]="project.endDate"/>
+                  <input type="date" [disabled]="!chkEnable.checked" name="endDate" [ngModel]="project.endDate  | date:'yyyy-MM-dd'"  (ngModelChange)="project.endDate=$event" required #enddateref="ngModel" (blur)="compareTwoDates(enddateref)"/>
+                  <span class="help-block" *ngIf="!enddateref.valid && enddateref.touched">Please enter valid end date</span>
+                  <div *ngIf="error.isError" class="alert alert-danger">
+                        {{ error.errorMessage }}
+                     </div>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="priority" style="width: 20.1%;">Priority : </label>
@@ -26,15 +32,15 @@
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="userId" style="width: 20.1%;">Manager : </label>
-                  <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="project.user.userId">
-                  
+                  <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="project.user.userId" required #uid="ngModel">
                   <button type="button" class="btn btn-default" data-toggle="modal" data-target="#userListModal">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
+                  <span class="help-block" *ngIf="!uid.valid && uid.touched">Please select manager for project</span>
               </div>
           </div>
           <div class="btn-toolbar">
-            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-primary" type="submit" [disabled]="!p.valid">Add</button>
             <button class="btn btn-primary" (click)="resetForm()" type="reset">Reset</button>
            </div>
         </form>

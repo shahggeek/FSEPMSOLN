@@ -6,14 +6,16 @@
           <div id="task-data">
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="projectName"  style="width: 20.1%;">Project : </label>
-                  <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="task.project.projectId">
+                  <input type="text" id="projectName" class="form-control" name="projectName" [(ngModel)]="task.project.projectId"  required #prname="ngModel">
                   <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#projectModal">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
+                  <span class="help-block" *ngIf="!prname.valid && prname.touched">Please select valid project </span>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="taskName"  style="width: 20.1%;">Task : </label>
-                  <input type="text" id="taskName" class="form-control" name="taskName"  [(ngModel)]="task.taskName">
+                  <input type="text" id="taskName" class="form-control" name="taskName"  [(ngModel)]="task.taskName"  required #tname="ngModel">
+                  <span class="help-block" *ngIf="!tname.valid && tname.touched">Please enter valid task name  </span>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <input #chkEnable ngModel type="checkbox"  id="isParent" class="form-control"  name="isParent" value="isParent">Parent Task
@@ -25,29 +27,36 @@
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="parentId"  style="width: 20.1%;">Parent Task : </label>
-                  <input type="text" [disabled]="chkEnable.checked"  id="parentId" class="form-control" name="parentId"  [(ngModel)]="task.parentTask.parentId">
+                  <input type="text" [disabled]="chkEnable.checked"  id="parentId" class="form-control" name="parentId"  [(ngModel)]="task.parentTask.parentId" required #paname="ngModel">
                   <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#parentModal">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
+                  <span class="help-block" *ngIf="!paname.valid && paname.touched && !chkEnable.checked">Please select valid parent task </span>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="startDate"  style="width: 20.1%;">StartDate : </label>
-                  <input type="date" [disabled]="chkEnable.checked" name="startDate" [(ngModel)]="task.startDate"/>
-                  </div>
-                  <div class="form-group form-inline" style="width: 100%;">
+                  <input type="date" [disabled]="chkEnable.checked" name="startDate" [(ngModel)]="task.startDate" required #startdateref="ngModel"/>
+                  <span class="help-block" *ngIf="!startdateref.valid && startdateref.touched">Please enter valid start date</span>
+               </div>
+               <div class="form-group form-inline" style="width: 100%;">
                     <label for="endDate"  style="width: 20.1%;">EndDate : </label>
-                  <input type="date" [disabled]="chkEnable.checked" name="endDate" [(ngModel)]="task.endDate"/>
+                  <input type="date" [disabled]="chkEnable.checked" name="endDate" [(ngModel)]="task.endDate" required #enddateref="ngModel" (blur)="compareTwoDates(enddateref)"/>
+                  <span class="help-block" *ngIf="!enddateref.valid && enddateref.touched">Please enter valid end date</span>
+                  <div *ngIf="error.isError" class="alert alert-danger">
+                        {{ error.errorMessage }}
+                     </div>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
                   <label for="userId"  style="width: 20.1%;">User : </label>
-                  <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="task.user.userId">
+                  <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="task.user.userId"  required #uid="ngModel">
                   <button type="button" class="btn btn-default" data-toggle="modal" data-target="#ownerModal">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
+                  <span class="help-block" *ngIf="!uid.valid && uid.touched">Please select owner for task</span>
               </div>
           </div>
           <div class="btn-toolbar">
-            <button class="btn btn-primary" type="submit">Add Task</button>
+            <button class="btn btn-primary" type="submit"  [disabled]="!t.valid">Add Task</button>
             <button class="btn btn-primary" type="reset">Reset</button>
            </div>
         </form>

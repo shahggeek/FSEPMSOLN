@@ -73,7 +73,7 @@ export class UserComponent implements OnInit {
     this.editTmpl : this.displayTmpl;
   }
 
-  saveUser(user:User) {
+  updateUser(user:User) {
     console.log("Save User"+this.selected.userId+" "+this.selected.firstName+" "+this.selected.lastName);
     user.employeeId = this.selected.employeeId;
     user.firstName = this.selected.firstName;
