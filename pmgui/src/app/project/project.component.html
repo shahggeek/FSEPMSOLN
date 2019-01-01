@@ -28,7 +28,7 @@
                   <label for="userId" style="width: 20.1%;">Manager : </label>
                   <input type="text" id="userId" class="form-control" name="userId" [(ngModel)]="project.user.userId">
                   
-                  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+                  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#userListModal">
                         <span class="glyphicon glyphicon-search"></span> Search
                   </button>
               </div>
@@ -98,13 +98,14 @@
                     </div>
                 </td>
             </ng-template>
-        </div>
-        <div id="myModal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    </div>
+    
+    <div id="userListModal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
                 <div class="modal-dialog"  role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel"   >Select Manager for Project</h4>
+                            <h4 class="modal-title" id="userModalLabel"   >Select Manager for Project</h4>
                         </div>
                         <div class="modal-body">
                                 <table class="table table-bordered table-striped">
@@ -117,8 +118,8 @@
                                     </thead>
                                     <tbody>
                                             <ng-template  let-user ngFor [ngForOf]="users">
-                                                    <tr *ngFor="let user of users">
-                                                        <td><input type="checkbox"  value="{{user.userId}}"  (change)="changeCheckbox($event, user.userId)"  [(ngModel)]="project.user.userId" class="form-control" /></td>
+                                                    <tr>
+                                                        <td><input type="checkbox"  value="{{user.userId}}"  (change)="changeCheckbox($event, user.userId)" class="form-control" /></td>
                                                         <td>{{user.userId}}</td>
                                                         <td>{{user.firstName}}</td>
                                                         <td>{{user.lastName}}</td>
@@ -129,9 +130,9 @@
                                 </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
                         </div>
                     </div>
                 </div>
-        </div>
+    </div>
 </div>

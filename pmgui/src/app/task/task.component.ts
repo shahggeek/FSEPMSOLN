@@ -19,7 +19,7 @@ export class TaskComponent implements OnInit {
   tasks : Task [] = [];
   users : User [] = [];
   parenttasks : ParentTask [] = [];
-
+  projects : Project [] = [];
   isParent = false;
   selected: Task;
 
@@ -46,6 +46,9 @@ export class TaskComponent implements OnInit {
 
   ngOnInit() {
     this.getAllTasks();
+    this.getAllProjects();
+    this.getAllUsers();
+    this.getAllParentTasks();
   }
 
   private rerender() {
@@ -96,6 +99,14 @@ export class TaskComponent implements OnInit {
     );
   }
 
+  
+  getAllProjects(){
+    this.projectRestService.getAllProjects().subscribe(
+      (projects : any[]) => this.projects = projects,
+      (error) => console.log(error)
+    );
+  }
+
   editTask(task : Task){
     console.log("Edit task "+task.taskId);
     this.selected = Object.assign({}, task);
@@ -137,6 +148,31 @@ export class TaskComponent implements OnInit {
 
   resetTask() {
       this.selected = null;
+  }
+
+  
+  changeCheckbox(event : any, userId : number){
+    if( event.target.checked){
+      this.task.user.userId = userId;
+    }else{
+      this.task.user.userId = null;
+    }
+  }
+
+  changeParentCheckbox(event : any, parentId : number){
+    if( event.target.checked){
+      this.task.parentTask.parentId = parentId;
+    }else{
+      this.task.parentTask.parentId = null;
+    }
+  }
+
+  changeProjectCheckbox(event : any, projectId : number){
+    if( event.target.checked){
+      this.task.project.projectId = projectId;
+    }else{
+      this.task.project.projectId  = null;
+    }
   }
 
 }
