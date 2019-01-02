@@ -89,11 +89,19 @@ public class TaskController {
 	
 	@RequestMapping(value = "/tasks/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Task> deleteTaskById(@PathVariable("id") long taskId){
+		LOGGER.info("Deleting TaskId:"+taskId);
 		Task task = taskService.getTask(taskId);
 		if (task == null){
+			LOGGER.error("Task doesn´t exist to Delete"+taskId);
             throw new DataAccessException("Task doesn´t exist to Delete");
     	}
-		taskService.deleteTask(task);;
+		if(task.getUser() != null && task.getUser().getUserId() != 0){
+			User user = userService.getUser(task.getUser().getUserId());
+			user.setTask(null);
+			userService.updateUser(user);
+		}
+		task.setUser(null);
+		taskService.deleteTask(task);
 		return new ResponseEntity<Task>(HttpStatus.NO_CONTENT);
 	}
 	

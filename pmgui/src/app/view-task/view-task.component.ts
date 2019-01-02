@@ -34,6 +34,11 @@ export class ViewTaskComponent implements OnInit {
   isParent = false;
   selected: Task;
 
+  task: Task = { taskId:0,  taskName: '', startDate: '', endDate:'', priority:0, status:'Open',
+  project:{ projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0}, tasks: [] },
+  parentTask:{parentId:0, parentTaskName:''},
+  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
+
   @ViewChild("outputAllTasks", {read: ViewContainerRef}) outputAllTasksRef: ViewContainerRef;
   @ViewChild('displayTmpl') displayTmpl: TemplateRef<any>;
   @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
@@ -58,11 +63,18 @@ export class ViewTaskComponent implements OnInit {
     this.selected = Object.assign({}, task);
   }
 
-  endTask(taskId : number){
-    console.log("End task "+taskId);
+  endTask(task : Task){
+    task.status = 'Completed';
+    if(!this.isParent){
+      this.taskRestService.updateTask(task).subscribe(
+        (response : Response ) => {
+          this.rerender();
+        },
+        (error) => console.log(error)
+      );
+    }
   }
 
-  
   getTemplate(task:Task) {
     return this.selected && this.selected.taskId == task.taskId ? 
     this.editTmpl : this.displayTmpl;

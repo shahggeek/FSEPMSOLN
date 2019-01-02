@@ -83,6 +83,12 @@ public class ProjectController {
 		if (project == null){
             throw new DataAccessException("Project doesn´t exist to Delete");
     	}
+		if(project.getUser() != null && project.getUser().getUserId() != 0){
+			User user = userService.getUser(project.getUser().getUserId());
+			user.setTask(null);
+			userService.updateUser(user);
+		}
+		project.setUser(null);
 		projectService.deleteProject(project);
 		return new ResponseEntity<Project>(HttpStatus.NO_CONTENT);
 	}

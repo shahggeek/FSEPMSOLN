@@ -23,8 +23,8 @@ export class TaskComponent implements OnInit {
   isParent = false;
   selected: Task;
 
-  task: Task = { taskId:0,  taskName: '', startDate: '', endDate:'', priority:0, status:'',
-  project:{ projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} },
+  task: Task = { taskId:0,  taskName: '', startDate: '', endDate:'', priority:0, status:'Open',
+  project:{ projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0}, tasks: [] },
   parentTask:{parentId:0, parentTaskName:''},
   user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
 
@@ -149,7 +149,10 @@ export class TaskComponent implements OnInit {
   resetTask() {
       this.selected = null;
   }
+  
+  resetForm(){
 
+  }
   
   changeCheckbox(event : any, userId : number){
     if( event.target.checked){

@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="table-responsive">
+    <div>
             <ng-container #outputAllProjects >
                 <hr>
                 <h3>All Projects</h3>
@@ -67,36 +67,47 @@
                             </h4>
                         </div>
                 </div>
-                <table class="table table-bordered table-striped" id="projectstable">
-                    <thead>
-    
-                    </thead>
-                    <tbody>
-                            <tr *ngFor="let project of projects | projectfilter:projectSearch; let i = index">
-                                    <ng-template [ngTemplateOutlet]="getTemplate(project)" 
-                                    [ngTemplateOutletContext]="{ $implicit: project, index: i }"></ng-template>
-                             </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-bordered table-striped" id="projectstable">
+                        <thead>
+                            <th class="col-xs-2" style="border-style: ridge">Project</th>
+                            <th class="col-xs-2" style="border-style: ridge">Start Date</th>
+                            <th class="col-xs-2" style="border-style: ridge">End Date</th>
+                            <th class="col-xs-1" style="border-style: ridge">No. of Tasks</th>
+                            <th class="col-xs-1" style="border-style: ridge">Completed</th>
+                            <th class="col-xs-1" style="border-style: ridge">Priority</th>
+                            <th class="col-xs-3" style="border-style: ridge">Action</th>
+                        </thead>
+                        <tbody>
+                                <tr *ngFor="let project of projects | projectfilter:projectSearch; let i = index">
+                                        <ng-template [ngTemplateOutlet]="getTemplate(project)" 
+                                        [ngTemplateOutletContext]="{ $implicit: project, index: i }"></ng-template>
+                                </tr>
+                        </tbody>
+                    </table>
             </ng-container>
             <ng-template #displayTmpl let-project>
                 <td>{{project.projectName}}</td>
                 <td>{{project.startDate | date: 'shortDate'}}</td>
                 <td>{{project.endDate | date: 'shortDate'}}</td>
+                <td>{{ (project.tasks)?.length }}</td>
+                <td>{{ (project.tasks | taskscount:'Completed')?.length }}</td>
                 <td>{{project.priority}}</td>
                 <td>
                     <div class="btn-toolbar">
-                        <button  class="btn btn-warning" (click)="editProject(project)">Edit</button>
-                        <button  class="btn btn-danger" (click)="deleteProject(project.projectId)">Delete</button>
+                        <button  class="btn btn-warning" (click)="editProject(project)">Update</button>
+                        <button  class="btn btn-danger" (click)="deleteProject(project.projectId)">Suspend</button>
                     </div>
                 </td>
             </ng-template>
             
                 <ng-template #editTmpl let-project>
                 <td><input type="text" [(ngModel)]="selected.projectName" /></td>
-                <td><input type="date" [(ngModel)]="selected.startDate" /></td>
-                <td><input type="date" [(ngModel)]="selected.endDate" /></td>
+                <td><input type="date" [ngModel]="selected.startDate |  date:'yyyy-MM-dd'" (ngModelChange)="selected.startDate =$event" /></td>
+                <td><input type="date" [ngModel]="selected.endDate |  date:'yyyy-MM-dd'" (ngModelChange)="selected.endDate =$event"  /></td>
+                <td><input type="text"  disabled  [ngModel]="(selected.tasks)?.length "/></td>
+                <td><input type="text" disabled [ngModel]=" (selected.tasks | taskscount:'Completed')?.length "/></td>
                 <td><input type="text" [(ngModel)]="selected.priority" /></td>
+               
                 <td>
                     <div class="btn-toolbar">
                         <button  class="btn btn-success"  (click)="saveUser(project)">Save</button>

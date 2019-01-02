@@ -15,7 +15,7 @@ export class ProjectComponent implements OnInit {
   projects : Project [] = [];
   users : User [] = [];
   selected: Project;
-  project: Project = { projectId:0,  projectName: '', startDate: '' , endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
+  project: Project = { projectId:0,  projectName: '', startDate: '' , endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0}, tasks:[] };
   tomorrow : Date = new Date();
   today : Date = new Date();
   error:any={isError:false,errorMessage:''};
@@ -76,7 +76,11 @@ export class ProjectComponent implements OnInit {
 
   editProject(project : Project){
     console.log("Edit project "+project.projectId);
+    console.log("Edit project "+project.startDate);
+    console.log("Edit project "+project.endDate);
     this.selected = Object.assign({}, project);
+    console.log("Edit project "+this.selected.startDate);
+    console.log("Edit project "+this.selected.endDate);
   }
 
   deleteProject(projectId : number){
@@ -85,7 +89,7 @@ export class ProjectComponent implements OnInit {
       (response : Response ) => {
         this.rerender();
       },
-      (error) => console.log(error)
+      (error) => window.alert(error.message)
     );
   }
 
@@ -112,6 +116,10 @@ export class ProjectComponent implements OnInit {
 
   resetUser() {
       this.selected = null;
+  }
+
+  resetForm(){
+
   }
 
   submitModalValue(event : any){

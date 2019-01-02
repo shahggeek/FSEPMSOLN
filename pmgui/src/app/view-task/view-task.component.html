@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="table-responsive">
+    <div>
         <ng-container #outputAllTasks >
             <hr>
             <h3>All Tasks</h3>
@@ -20,47 +20,54 @@
                 </div>
             </div>
             <table class="table table-bordered table-striped" id="taskstable">
-                <thead>
-
-                </thead>
-                <tbody>
+                    <thead>
+                            <th class="col-xs-2" style="border-style: ridge">Task</th>
+                            <th class="col-xs-2" style="border-style: ridge">Parent Task</th>
+                            <th class="col-xs-1" style="border-style: ridge">Priority</th>
+                            <th class="col-xs-1" style="border-style: ridge">Start</th>
+                            <th class="col-xs-1" style="border-style: ridge">End</th>
+                            <th class="col-xs-1" style="border-style: ridge">Status</th>
+                            <th class="col-xs-1" style="border-style: ridge">Owner</th>
+                            <th class="col-xs-2" style="border-style: ridge">Action</th>
+                    </thead>
+                     <tbody>
                         <tr *ngFor="let task of tasks | taskfilter:projectSearch; let i = index">
                                 <ng-template [ngTemplateOutlet]="getTemplate(task)" 
                                 [ngTemplateOutletContext]="{ $implicit: task, index: i }"></ng-template>
                          </tr>
-                </tbody>
+                     </tbody>
             </table>
         </ng-container>
         <ng-template #displayTmpl let-task>
             <td>{{task.taskName}}</td>
-            <td>{{task.parentTask.parentTaskName}}</td>
-            <td>{{task.project.projectName}}</td>
+            <td>{{task.parentTask?.parentTaskName}}</td>
             <td>{{task.priority}}</td>
             <td>{{task.startDate | date :'shortDate'}}</td>
             <td>{{task.endDate | date : 'shortDate'}}</td>
             <td>{{task.status}}</td>
+            <td>{{task.user?.firstName}}</td>
             <td>
                 <div class="btn-toolbar">
                     <button  class="btn btn-warning" (click)="editTask(task)">Edit</button>
-                    <button  class="btn btn-danger" (click)="endTask(task.taskId)">End Task</button>
+                    <button  class="btn btn-danger" (click)="endTask(task)">End Task</button>
                 </div>
             </td>
         </ng-template>
         
-            <ng-template #editTmpl let-task>
-                <td><input type="text" [(ngModel)]="selected.taskName" /></td>
-                <td><input type="text" [(ngModel)]="selected.parentTask.parentTaskName" /></td>
-                <td><input type="text" [(ngModel)]="selected.project.projectName" /></td>
-                <td><input type="text" [(ngModel)]="selected.priority" /></td>
-                <td><input type="date" [(ngModel)]="selected.startDate" /></td>
-                <td><input type="date" [(ngModel)]="selected.endDate" /></td>
-                <td><input type="text" [(ngModel)]="selected.status" /></td>
-            <td>
-                <div class="btn-toolbar">
-                    <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
-                    <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
-                </div>
-            </td>
-        </ng-template>
+        <ng-template #editTmpl let-task>
+            <td><input type="text" [(ngModel)]="selected.taskName" /></td>
+            <td><input type="text" disabled [(ngModel)]="selected.parentTask.parentTaskName" /></td>
+            <td><input type="text" [(ngModel)]="selected.priority" /></td>
+            <td><input type="date" [(ngModel)]="selected.startDate" /></td>
+            <td><input type="date" [(ngModel)]="selected.endDate" /></td>
+            <td><input type="text" [(ngModel)]="selected.status" /></td>
+            <td><input type="text" disabled [(ngModel)]="selected.user.firstName" /></td>
+        <td>
+            <div class="btn-toolbar">
+                <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
+                <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
+            </div>
+        </td>
+    </ng-template>
     </div>
 </div>

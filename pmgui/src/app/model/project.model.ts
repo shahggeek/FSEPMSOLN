@@ -1,4 +1,5 @@
 import { User } from './user.model';
+import { Task } from './task.model';
 
 export class Project {
     public projectId:number;
@@ -7,15 +8,18 @@ export class Project {
     public endDate:string;
     public priority:number;
     public user:User;
+    public tasks : Task[];
 
    
-    constructor(projectId:number, projectName:string, startDate:string,endDate:string, priority:number, user:User){
+    constructor(projectId:number, projectName:string, startDate:string,endDate:string,
+         priority:number, user:User, tasks : Task[]){
        this.projectId = projectId;
        this.projectName = projectName;
        this.startDate = startDate;
        this.endDate = endDate;
        this.priority = priority;
        this.user = user;
+       this.tasks = tasks;
     }
 
 }

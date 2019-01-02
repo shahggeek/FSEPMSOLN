@@ -18,6 +18,9 @@
                   <span class="help-block" *ngIf="!tname.valid && tname.touched">Please enter valid task name  </span>
               </div>
               <div class="form-group form-inline" style="width: 100%;">
+                    <input type="hidden" id="status" class="form-control" name="status" value="Open">
+                </div>
+              <div class="form-group form-inline" style="width: 100%;">
                   <input #chkEnable ngModel type="checkbox"  id="isParent" class="form-control"  name="isParent" value="isParent">Parent Task
               </div>
               <div class="form-group form-inline" style="width: 100%;">
