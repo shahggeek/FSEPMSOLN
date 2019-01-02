@@ -123,6 +123,11 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="userModalLabel"   >Select Manager for Project</h4>
+                            <div class="col-md-3">
+                                    <h4> Search
+                                            <input type="text" placeholder="First Name" [(ngModel)]="userSearchForModal">
+                                    </h4>
+                            </div>
                         </div>
                         <div class="modal-body">
                                 <table class="table table-bordered table-striped">
@@ -134,15 +139,13 @@
                                             <th>Employee Id</th>
                                     </thead>
                                     <tbody>
-                                            <ng-template  let-user ngFor [ngForOf]="users">
-                                                    <tr>
-                                                        <td><input type="checkbox"  value="{{user.userId}}"  (change)="changeCheckbox($event, user.userId)" class="form-control" /></td>
-                                                        <td>{{user.userId}}</td>
-                                                        <td>{{user.firstName}}</td>
-                                                        <td>{{user.lastName}}</td>
-                                                        <td>{{user.employeeId}}</td>
-                                                    </tr>
-                                            </ng-template >
+                                            <tr *ngFor="let user of users | userfilter:userSearchForModal; let i = index">
+                                                    <td><input type="checkbox"  value="{{user.userId}}"  (change)="changeCheckbox($event, user.userId)" class="form-control" /></td>
+                                                    <td>{{user.userId}}</td>
+                                                    <td>{{user.firstName}}</td>
+                                                    <td>{{user.lastName}}</td>
+                                                    <td>{{user.employeeId}}</td>
+                                            </tr>
                                     </tbody>
                                 </table>
                         </div>

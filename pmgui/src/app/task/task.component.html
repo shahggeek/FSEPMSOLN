@@ -71,6 +71,11 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="ownerModalLabel"   >Select Manager for Project</h4>
+                        <div class="col-md-2">
+                                <h4> Search
+                                        <input type="text" placeholder="First Name" [(ngModel)]="ownerSearchForModal">
+                                </h4>
+                        </div>
                     </div>
                     <div class="modal-body">
                             <table class="table table-bordered table-striped">
@@ -82,15 +87,13 @@
                                         <th>Employee Id</th>
                                 </thead>
                                 <tbody>
-                                        <ng-template  let-user ngFor [ngForOf]="users">
-                                                <tr>
-                                                    <td><input type="checkbox"  value="{{user.userId}}"  (change)="changeCheckbox($event, user.userId)" class="form-control" /></td>
-                                                    <td>{{user.userId}}</td>
-                                                    <td>{{user.firstName}}</td>
-                                                    <td>{{user.lastName}}</td>
-                                                    <td>{{user.employeeId}}</td>
-                                                </tr>
-                                        </ng-template >
+                                        <tr *ngFor="let user of users | userfilter:ownerSearchForModal; let i = index">
+                                                <td><input type="checkbox"  value="{{user.userId}}"  (change)="changeCheckbox($event, user.userId)" class="form-control" /></td>
+                                                <td>{{user.userId}}</td>
+                                                <td>{{user.firstName}}</td>
+                                                <td>{{user.lastName}}</td>
+                                                <td>{{user.employeeId}}</td>
+                                        </tr>
                                 </tbody>
                             </table>
                     </div>
@@ -107,6 +110,11 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="parentModalLabel"   >Select Parent Task</h4>
+                        <div class="col-md-2">
+                                <h4> Search
+                                        <input type="text" placeholder="Parent task" [(ngModel)]="parentSearchForModal">
+                                </h4>
+                        </div>
                     </div>
                     <div class="modal-body">
                             <table class="table table-bordered table-striped">
@@ -116,13 +124,11 @@
                                         <th>Parent Task Name</th>
                                 </thead>
                                 <tbody>
-                                        <ng-template  let-parenttask ngFor [ngForOf]="parenttasks">
-                                                <tr>
-                                                    <td><input type="checkbox"  value="{{parenttask.parentId}}"  (change)="changeParentCheckbox($event, parenttask.parentId)" class="form-control" /></td>
-                                                    <td>{{parenttask.parentId}}</td>
-                                                    <td>{{parenttask.parentTaskName}}</td>
-                                                </tr>
-                                        </ng-template >
+                                        <tr *ngFor="let parenttask of parenttasks | parenttaskfilter:parentSearchForModal; let i = index">
+                                                <td><input type="checkbox"  value="{{parenttask.parentId}}"  (change)="changeParentCheckbox($event, parenttask.parentId)" class="form-control" /></td>
+                                                <td>{{parenttask.parentId}}</td>
+                                                <td>{{parenttask.parentTaskName}}</td>
+                                        </tr>
                                 </tbody>
                             </table>
                     </div>
@@ -139,6 +145,11 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="projectModalLabel"   >Select Project</h4>
+                        <div class="col-md-2">
+                                <h4> Search
+                                        <input type="text" placeholder="Project Name" [(ngModel)]="projectSearchForModal">
+                                </h4>
+                        </div>
                     </div>
                     <div class="modal-body">
                             <table class="table table-bordered table-striped">
@@ -149,14 +160,12 @@
                                         <th>Project Manager</th>
                                 </thead>
                                 <tbody>
-                                        <ng-template  let-project ngFor [ngForOf]="projects">
-                                                <tr>
-                                                    <td><input type="checkbox"  value="{{project.projectId}}"  (change)="changeProjectCheckbox($event, project.projectId)" class="form-control" /></td>
-                                                    <td>{{project.projectId}}</td>
-                                                    <td>{{project.projectName}}</td>
-                                                    <td>{{project?.user?.firstName}} {{project?.user?.lastName}} </td>
-                                                </tr>
-                                        </ng-template >
+                                        <tr *ngFor="let project of projects | projectfilter:projectSearchForModal; let i = index">
+                                                <td><input type="checkbox"  value="{{project.projectId}}"  (change)="changeProjectCheckbox($event, project.projectId)" class="form-control" /></td>
+                                                <td>{{project.projectId}}</td>
+                                                <td>{{project.projectName}}</td>
+                                                <td>{{project?.user?.firstName}} {{project?.user?.lastName}} </td>
+                                        </tr>
                                 </tbody>
                             </table>
                     </div>

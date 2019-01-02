@@ -14,6 +14,7 @@ import { ViewTaskComponent } from './view-task/view-task.component';
 import { TaskFilterPipe } from './shared/taskfilter.pipe';
 import { ProjectFilterPipe } from './shared/projectfilter.pipe';
 import { TaskCountFilterPipe } from './shared/taskcountfilter.pipe';
+import { ParentTaskFilterPipe } from './shared/parenttaskfilter.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TaskCountFilterPipe } from './shared/taskcountfilter.pipe';
     TaskFilterPipe,
     ProjectFilterPipe,
     TaskCountFilterPipe,
+    ParentTaskFilterPipe,
     ViewTaskComponent
   ],
   imports: [
