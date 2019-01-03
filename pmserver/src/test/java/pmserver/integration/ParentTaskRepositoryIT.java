@@ -35,6 +35,7 @@ public class ParentTaskRepositoryIT {
 		ParentTask parentTask = new ParentTask();
 		parentTask.setParentTaskName("Test Parent Task");
 		Long parentId = parentTaskRepositoryDao.addNewParentTask(parentTask);
+		ParentTask parentTask2 = parentTaskRepositoryDao.getParentTask(parentId);
 		System.out.println("Added ParentTask "+parentId);
 		parentTaskRepositoryDao.deleteParentTask(parentTask);
 	}

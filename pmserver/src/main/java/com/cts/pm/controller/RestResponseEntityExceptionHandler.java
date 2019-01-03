@@ -18,7 +18,8 @@ public class RestResponseEntityExceptionHandler
  
 	 @ExceptionHandler(value = {SQLException.class, DataAccessException.class})
 	 protected ResponseEntity<Object> handleSQLConflict(SQLException ex, WebRequest request) {
-    	System.out.println("SQL Exception");
+    	ex.printStackTrace();
+		 System.out.println("SQL Exception");
         return handleExceptionInternal(ex, ex.getMessage(), 
           new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
 	 }

@@ -28,7 +28,7 @@ public class ParentTaskServiceTest {
 	@InjectMocks
 	private ParentTaskServiceImpl parenttaskService ;
 
-
+	
 	@Test
     public void getAllParentParentTasksTest() throws SQLException
     {

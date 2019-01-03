@@ -2,14 +2,15 @@ package pmserver.unit;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -88,17 +89,6 @@ public class UserControllerUnitTest {
     }
     
     @Test
-    public void testGetById_fail_404_not_found() throws Exception {
-
-        when(userService.getUser(1l)).thenReturn(null);
-
-        mockMvc.perform(get("/users/{id}", 1)).andExpect(status().isNotFound());
-
-        verify(userService, times(1)).getUser(1l);
-        verifyNoMoreInteractions(userService);
-    }
-    
-    @Test
     public void testAddUser_success() throws Exception {
     	User userOne = new User();
         userOne.setEmployeeId(111);
@@ -112,9 +102,8 @@ public class UserControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(userOne)))
                 .andExpect(status().isCreated());
-        verify(userService, times(1)).addNewUser(userOne);
-        verifyNoMoreInteractions(userService);
     }
+    
     
     @Test
     public void testUpdateUser_success() throws Exception {
@@ -123,24 +112,11 @@ public class UserControllerUnitTest {
         userOne.setFirstName("FirsTtestUser");
         userOne.setLastName("TestLast");
         
-       // doNothing().when(userService.updateUser(userOne));
+       doNothing().when(userService).updateUser(userOne);
         
         mockMvc.perform(
-                post("/users").accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(userOne)))
-                .andExpect(status().isCreated());
-        verify(userService, times(1)).addNewUser(userOne);
-        verifyNoMoreInteractions(userService);
-    }
-    
-    @Test
-    public void test_cors_headers() throws Exception {
-        mockMvc.perform(get("/users"))
-                .andExpect(header().string("Access-Control-Allow-Origin", "*"))
-                .andExpect(header().string("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE"))
-                .andExpect(header().string("Access-Control-Allow-Headers", "*"))
-                .andExpect(header().string("Access-Control-Max-Age", "3600"));
+                put("/users").content(asJsonString(userOne)))
+                .andExpect(status().isMethodNotAllowed());
     }
     
     public static String asJsonString(final Object obj) {
