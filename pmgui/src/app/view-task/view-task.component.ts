@@ -21,6 +21,7 @@ export class ViewTaskComponent implements OnInit {
 
   ngOnInit() {
     this.getAllTasks();
+    this.getAllParentTasks();
   }
 
   private rerender() {

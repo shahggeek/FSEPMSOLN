@@ -31,10 +31,29 @@
                             <th class="col-xs-2" style="border-style: ridge">Action</th>
                     </thead>
                      <tbody>
+                          <!-- display all tasks,  editable -->
                         <tr *ngFor="let task of tasks | taskfilter:taskSearch; let i = index">
                                 <ng-template [ngTemplateOutlet]="getTemplate(task)" 
                                 [ngTemplateOutletContext]="{ $implicit: task, index: i }"></ng-template>
                          </tr>
+                         <!-- Just display parent task, non editable -->
+                            <ng-template ngFor let-parenttask [ngForOf]="parenttasks | parenttaskfilter:taskSearch">
+                                <tr>
+                                    <td>{{parenttask.parentTaskName}}</td>
+                                    <td>No Parent task</td>
+                                    <td>0</td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td>
+                                        <div class="btn-toolbar">
+                                            <button  class="btn btn-warning" disabled >Edit</button>
+                                            <button  class="btn btn-danger" disabled>End Task</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
                      </tbody>
             </table>
         </ng-container>
@@ -62,12 +81,15 @@
             <td><input type="date" [ngModel]="selected.endDate |  date:'yyyy-MM-dd'"  (ngModelChange)="selected.endDate =$event"/></td>
             <td><input type="text" [(ngModel)]="selected.status" /></td>
             <td><input type="text" disabled [(ngModel)]="selected.user.firstName" /></td>
-        <td>
-            <div class="btn-toolbar">
-                <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
-                <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
-            </div>
-        </td>
-    </ng-template>
+            <td>
+                <div class="btn-toolbar">
+                    <button  class="btn btn-success"  (click)="saveTask(task)">Save</button>
+                    <button  class="btn btn-primary" (click)="resetTask()">Cancel</button>
+                </div>
+            </td>
+        </ng-template>
+
+       
+
     </div>
 </div>
