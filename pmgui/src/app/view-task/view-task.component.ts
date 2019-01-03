@@ -76,8 +76,15 @@ export class ViewTaskComponent implements OnInit {
   }
 
   getTemplate(task:Task) {
-    return this.selected && this.selected.taskId == task.taskId ? 
-    this.editTmpl : this.displayTmpl;
+    if(this.selected && this.selected.taskId == task.taskId){
+      if(this.selected.status == 'Completed'){
+        return this.displayTmpl;
+      }else{
+        return this.editTmpl; 
+      }
+    }else{
+      return this.displayTmpl;
+    }
   }
 
   saveTask(task:Task) {

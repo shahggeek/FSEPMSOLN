@@ -27,7 +27,8 @@ export class TaskComponent implements OnInit {
   project:{ projectId:0,  projectName: '', startDate: '', endDate:'', priority:0,  user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0}, tasks: [] },
   parentTask:{parentId:0, parentTaskName:''},
   user: { userId: 0, firstName: '', lastName : '', employeeId : 0 , projectId:0, taskId:0} };
-
+  tomorrow : Date = new Date();
+  today : Date = new Date();
   parentTask: ParentTask = {parentId:0, parentTaskName:''};
   error:any={isError:false,errorMessage:''};
 
@@ -49,10 +50,20 @@ export class TaskComponent implements OnInit {
     this.getAllProjects();
     this.getAllUsers();
     this.getAllParentTasks();
+    this.setDefaultDates();
+  }
+
+  private  setDefaultDates(){
+    this.tomorrow  = new Date();
+    this.today = new Date();
+    this.tomorrow.setDate(this.today.getDate() + 1);
+    this.task.startDate = this.today.toISOString().slice(0,10);
+    this.task.endDate = this.tomorrow.toISOString().slice(0,10);
   }
 
   private rerender() {
     this.getAllTasks();
+    this.getAllParentTasks();
     this.outputAllTasksRef.clear();
   }
 
@@ -63,7 +74,7 @@ export class TaskComponent implements OnInit {
         (response : Response ) => {
           this.rerender();
         },
-        (error) => console.log(error)
+        (error) =>  window.alert(error.message)
       );
     }else{
       this.parentTask.parentId = 0;
@@ -72,30 +83,31 @@ export class TaskComponent implements OnInit {
         (response : Response ) => {
           this.rerender();
         },
-        (error) => console.log(error)
+        (error) =>  window.alert(error.message)
       );
     }
     form.resetForm();
+    this.setDefaultDates();
   }
 
   getAllTasks(){
     this.taskRestService.getAllTasks().subscribe(
       (tasks : any[]) => this.tasks = tasks,
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
   getAllUsers(){
     this.userRestService.getAllUsers().subscribe(
       (users : any[]) => this.users = users,
-      (error) => console.log(error)
+      (error) => window.alert(error.message)
     );
   }
 
   getAllParentTasks(){
     this.parentTaskRestService.getAllParentTasks().subscribe(
       (parenttasks : any[]) => this.parenttasks = parenttasks,
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
@@ -103,22 +115,20 @@ export class TaskComponent implements OnInit {
   getAllProjects(){
     this.projectRestService.getAllProjects().subscribe(
       (projects : any[]) => this.projects = projects,
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
   editTask(task : Task){
-    console.log("Edit task "+task.taskId);
     this.selected = Object.assign({}, task);
   }
 
   deleteTask(taskId : number){
-    console.log("Delete task "+taskId);
     this.taskRestService.deleteTask(taskId).subscribe(
       (response : Response ) => {
         this.rerender();
       },
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
@@ -139,7 +149,7 @@ export class TaskComponent implements OnInit {
         (response : Response ) => {
           this.rerender();
         },
-        (error) => console.log(error)
+        (error) =>  window.alert(error.message)
       );
     }
    

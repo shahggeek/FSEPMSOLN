@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <h4> Project
-                            <input type="text" placeholder="Project Name" [(ngModel)]="projectSearch">
+                            <input type="text" placeholder="Task Name" [(ngModel)]="taskSearch">
                     </h4>
                 </div>
                 <div class="col-md-6">
@@ -21,7 +21,7 @@
             </div>
             <table class="table table-bordered table-striped" id="taskstable">
                     <thead>
-                            <th class="col-xs-2" style="border-style: ridge">Task</th>
+                            <th class="col-xs-2" style="border-style: ridge">Task Name</th>
                             <th class="col-xs-2" style="border-style: ridge">Parent Task</th>
                             <th class="col-xs-1" style="border-style: ridge">Priority</th>
                             <th class="col-xs-1" style="border-style: ridge">Start</th>
@@ -31,7 +31,7 @@
                             <th class="col-xs-2" style="border-style: ridge">Action</th>
                     </thead>
                      <tbody>
-                        <tr *ngFor="let task of tasks | taskfilter:projectSearch; let i = index">
+                        <tr *ngFor="let task of tasks | taskfilter:taskSearch; let i = index">
                                 <ng-template [ngTemplateOutlet]="getTemplate(task)" 
                                 [ngTemplateOutletContext]="{ $implicit: task, index: i }"></ng-template>
                          </tr>
@@ -58,8 +58,8 @@
             <td><input type="text" [(ngModel)]="selected.taskName" /></td>
             <td><input type="text" disabled [(ngModel)]="selected.parentTask.parentTaskName" /></td>
             <td><input type="text" [(ngModel)]="selected.priority" /></td>
-            <td><input type="date" [(ngModel)]="selected.startDate" /></td>
-            <td><input type="date" [(ngModel)]="selected.endDate" /></td>
+            <td><input type="date" [ngModel]="selected.startDate  |  date:'yyyy-MM-dd'" (ngModelChange)="selected.startDate =$event" /></td>
+            <td><input type="date" [ngModel]="selected.endDate |  date:'yyyy-MM-dd'"  (ngModelChange)="selected.endDate =$event"/></td>
             <td><input type="text" [(ngModel)]="selected.status" /></td>
             <td><input type="text" disabled [(ngModel)]="selected.user.firstName" /></td>
         <td>

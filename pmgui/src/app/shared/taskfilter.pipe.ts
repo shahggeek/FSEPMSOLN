@@ -11,6 +11,6 @@ export class TaskFilterPipe implements PipeTransform {
         if (!items || !args) {
             return items;
         }
-        return items.filter(item => item.project.projectName.toLowerCase().indexOf(args.toLowerCase()) !== -1);
+        return items.filter(item => item.taskName.toLowerCase().indexOf(args.toLowerCase()) !== -1);
     }
 }

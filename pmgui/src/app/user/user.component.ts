@@ -32,12 +32,11 @@ export class UserComponent implements OnInit {
   }
 
   onAddUser(form : NgForm){
-    console.log(form.value);
     this.userRestService.addUser(form.value).subscribe(
       (response : Response ) => {
         this.rerender();
       },
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
     form.resetForm();
   }
@@ -49,22 +48,20 @@ export class UserComponent implements OnInit {
   getAllUsers(){
     this.userRestService.getAllUsers().subscribe(
       (users : any[]) => this.users = users,
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
   editUser(user : User){
-    console.log("Edit User"+user.firstName+" "+user.lastName);
     this.selected = Object.assign({}, user);
   }
 
   deleteUser(userId : number){
-    console.log("Delete User"+userId);
     this.userRestService.deleteUser(userId).subscribe(
       (response : Response ) => {
         this.rerender();
       },
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
@@ -74,7 +71,6 @@ export class UserComponent implements OnInit {
   }
 
   updateUser(user:User) {
-    console.log("Save User"+this.selected.userId+" "+this.selected.firstName+" "+this.selected.lastName);
     user.employeeId = this.selected.employeeId;
     user.firstName = this.selected.firstName;
     user.lastName = this.selected.lastName;
@@ -82,7 +78,7 @@ export class UserComponent implements OnInit {
       (response : Response ) => {
         this.rerender();
       },
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
     this.resetUser();
   }

@@ -54,7 +54,7 @@ export class ProjectComponent implements OnInit {
       (response : Response ) => {
         this.rerender();
       },
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
     form.resetForm();
     this.setDefaultDates();
@@ -63,28 +63,22 @@ export class ProjectComponent implements OnInit {
   getAllProjects(){
     this.projectRestService.getAllProjects().subscribe(
       (projects : any[]) => this.projects = projects,
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
   getAllUsers(){
     this.userRestService.getAllUsers().subscribe(
       (users : any[]) => this.users = users,
-      (error) => console.log(error)
+      (error) =>  window.alert(error.message)
     );
   }
 
   editProject(project : Project){
-    console.log("Edit project "+project.projectId);
-    console.log("Edit project "+project.startDate);
-    console.log("Edit project "+project.endDate);
     this.selected = Object.assign({}, project);
-    console.log("Edit project "+this.selected.startDate);
-    console.log("Edit project "+this.selected.endDate);
   }
 
   deleteProject(projectId : number){
-    console.log("Delete project "+projectId);
     this.projectRestService.deleteProject(projectId).subscribe(
       (response : Response ) => {
         this.rerender();
@@ -109,7 +103,7 @@ export class ProjectComponent implements OnInit {
       (response : Response ) => {
         this.rerender();
       },
-      (error) => console.log(error)
+      (error) => window.alert(error.message)
     );
     this.resetUser();
   }
