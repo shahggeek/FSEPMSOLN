@@ -18,6 +18,7 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "TASK",uniqueConstraints = { @UniqueConstraint(columnNames = { "taskId" }) })
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Task implements Serializable {
 
 	@Id
@@ -52,17 +53,17 @@ public class Task implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "projectId", nullable = false)
 	//@JsonManagedReference(value="project-tasks")
-	@JsonBackReference(value="project-tasks")
+	//@JsonBackReference(value="project-tasks")
+	@JsonIgnore
 	private Project project;
 	
-	@ManyToOne
-	@JoinColumn(name = "parentId", nullable = true)
-	//@JsonManagedReference
-	//(value="parent-task")
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinColumn(name = "parentId")
+	////@JsonManagedReference(value="parent-task")
 	private ParentTask parentTask;
 	
 	@OneToOne(fetch = FetchType.EAGER,cascade = { CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "task")
-	//@JsonBackReference(value="user-task")
+	//@JsonManagedReference(value="user-task")
 	private User user;
 	
 	
