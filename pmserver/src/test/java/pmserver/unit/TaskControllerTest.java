@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.cts.pm.model.Task;
+import com.cts.pm.model.User;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TaskControllerTest extends AbstractTest {
 
@@ -28,6 +29,20 @@ public class TaskControllerTest extends AbstractTest {
 	
 	@Test
 	public void addTask() throws Exception {
+		String usersuri = "/users";
+		User userOne = new User();
+        userOne.setEmployeeId(111);
+        userOne.setFirstName("FirsTtestUser");
+        userOne.setLastName("TestLast");
+        
+		String inputUserJson = super.mapToJson(userOne);
+		MvcResult mvcUserResult = mvc.perform(
+				MockMvcRequestBuilders.post(usersuri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputUserJson))
+				.andReturn();
+
+		String [] userlocationTulips = mvcUserResult.getResponse().getHeader("Location").split("/");
+		String userId = userlocationTulips[userlocationTulips.length-1];
+		
 		String uri = "/tasks";
 		Task taskOne = new Task();
         taskOne.setTaskName("Test Task 1");
@@ -35,7 +50,8 @@ public class TaskControllerTest extends AbstractTest {
         taskOne.setStartDate(new Date());
         taskOne.setEndDate(new Date());
         taskOne.setStatus("InProgress");
-        
+        userOne.setUserId(Long.valueOf(userId));
+        taskOne.setUser(userOne);
 		String inputJson = super.mapToJson(taskOne);
 		MvcResult mvcResult = mvc.perform(
 				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
@@ -61,26 +77,4 @@ public class TaskControllerTest extends AbstractTest {
 		assertTrue(taskList.length > 0);
 	}
 	
-	
-
-	@Test
-	public void updateTask() throws Exception {
-		String uri = "/tasks/"+taskId;
-		System.out.println("Update URI "+uri);
-		Task taskOne = new Task();
-        taskOne.setTaskName("Test Task 1");
-        taskOne.setPriority(1);
-        taskOne.setStartDate(new Date());
-		String inputJson = super.mapToJson(taskOne);
-		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
-				.andReturn();
-
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-		
-		mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
-		status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-	}
 }

@@ -48,6 +48,7 @@ public class ProjectControllerTest extends AbstractTest {
         projectOne.setPriority(1);
         projectOne.setStartDate(new Date());
         projectOne.setEndDate(new Date());
+        userOne.setUserId(Long.valueOf(userId));
         projectOne.setUser(userOne);
         
 		String inputJson = super.mapToJson(projectOne);
@@ -60,8 +61,6 @@ public class ProjectControllerTest extends AbstractTest {
 		projectId = locationTulips[locationTulips.length-1];
 		assertEquals(201, status);
 		
-		usersuri = "/users/"+userId;
-		mvcUserResult = mvc.perform(MockMvcRequestBuilders.delete(usersuri)).andReturn();
 	}
 	
 	@Test
@@ -86,6 +85,7 @@ public class ProjectControllerTest extends AbstractTest {
         projectOne.setProjectName("Test Project 1");
         projectOne.setPriority(1);
         projectOne.setStartDate(new Date());
+        projectOne.setEndDate(new Date());
 		String inputJson = super.mapToJson(projectOne);
 		MvcResult mvcResult = mvc.perform(
 				MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
